@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="th" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spec X - Intelligent Custom Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        xBg: '#f4f6f8',
+                        xCard: '#ffffff',
+                        xBorder: '#cfd9de',
+                        xTextMain: '#0f1419',
+                        xTextMuted: '#536471',
+                        xHover: '#f8f9fa',
+                        xBlue: '#1d9bf0',
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ตัวแปรสีสไตล์ X ผสมมิติการ์ดให้ชัดเจนขึ้น */
+        :root {
+            --x-blue: #0f1419;
+            --x-blue-hover: #353535;
+            --x-bg-body: #f4f6f8; 
+            --x-card-bg: #ffffff; 
+            --x-border: #cfd9de; 
+            --x-text-main: #0f1419;
+            --x-text-muted: #536471;
+            --x-hover-bg: #f8f9fa;
+        }
+
+        [data-bs-theme="dark"] {
+            --x-bg-body: #000000; 
+            --x-card-bg: #16181c; 
+            --x-border: #38444d;
+            --x-text-main: #e7e9ea;
+            --x-text-muted: #8b98a5;
+            --x-hover-bg: #1c2732;
+        }
+
+        body { 
+            background-color: var(--x-bg-body); 
+            color: var(--x-text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ปรับให้การ์ดและปุ่มดึงสีจาก CSS Variables เพื่อรองรับ Dark Mode */
+        .bg-xCard { background-color: var(--x-card-bg) !important; }
+        .text-xTextMain { color: var(--x-text-main) !important; }
+        .text-xTextMuted { color: var(--x-text-muted) !important; }
+        .border-xBorder { border-color: var(--x-border) !important; }
+        .bg-white { background-color: var(--x-card-bg) !important; }
+        
+        /* Custom Scrollbar for Modals */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--x-border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--x-text-muted); }
+
+        /* Loader */
+        .loader { border-top-color: #1d9bf0; -webkit-animation: spinner 1.5s linear infinite; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Smooth Transition for Accordion */
+        .accordion-content { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+
+        /* Dark mode overrides สำหรับ Modal และอื่นๆ */
+        [data-bs-theme="dark"] .bg-gray-50 { background-color: var(--x-hover-bg) !important; }
+        [data-bs-theme="dark"] .bg-gray-100 { background-color: var(--x-hover-bg) !important; }
+        [data-bs-theme="dark"] .border-gray-200, [data-bs-theme="dark"] .border-gray-100 { border-color: var(--x-border) !important; }
+        [data-bs-theme="dark"] .text-gray-800, [data-bs-theme="dark"] .text-gray-900, [data-bs-theme="dark"] .text-gray-700 { color: var(--x-text-main) !important; }
+        [data-bs-theme="dark"] .text-gray-600, [data-bs-theme="dark"] .text-gray-500 { color: var(--x-text-muted) !important; }
+        [data-bs-theme="dark"] .divide-gray-100 > :not([hidden]) ~ :not([hidden]) { border-color: var(--x-border) !important; }
+        [data-bs-theme="dark"] .hover\:bg-gray-50:hover { background-color: var(--x-hover-bg) !important; }
+        [data-bs-theme="dark"] .hover\:bg-gray-100:hover { background-color: var(--x-hover-bg) !important; }
+        [data-bs-theme="dark"] input[type="text"] { background-color: var(--x-card-bg); color: var(--x-text-main); }
+        [data-bs-theme="dark"] input[type="text"]:focus { background-color: var(--x-bg-body); }
+    </style>
+</head>
+<body class="antialiased">
+
+<div class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-xBorder py-3 mb-6 transition-colors duration-300" style="background-color: rgba(var(--x-card-bg), 0.85);">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <div>
+            <h2 class="text-xl font-bold tracking-tight text-xTextMain mb-0 flex items-center">
+                <i class="bi bi-pc-display text-xBlue mr-2 text-2xl"></i> Spec X - Custom Builder
+            </h2>
+            <div class="text-xs text-xTextMuted font-medium mt-1">ประกอบคอมพิวเตอร์ด้วยตัวเอง พร้อมระบบ AI ประเมิน 4 มิติ</div>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="theme-toggle" class="flex items-center justify-center w-10 h-10 rounded-full border border-xBorder text-xTextMain bg-transparent transition-colors hover:bg-gray-100">
+                <i class="bi bi-moon-stars-fill"></i>
+            </button>
+            <a href="{% url 'home' %}" class="inline-flex items-center px-4 py-2 bg-black border border-black hover:bg-gray-800 text-white text-sm font-bold rounded-full transition-colors shadow-sm">
+                <i class="bi bi-robot mr-2 text-white"></i> ⚡ Back to auto Build
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 pb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-2">
+            <div class="flex justify-between items-end mb-4 px-1">
+                <h4 class="text-lg font-bold text-xTextMain"><i class="bi bi-tools text-gray-400 mr-2"></i> เลือกชิ้นส่วน (ทีละขั้นตอน)</h4>
+                <button onclick="resetBuild()" class="text-sm font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-full transition-colors flex items-center">
+                    <i class="bi bi-trash3 mr-1"></i> เริ่มจัดใหม่ทั้งหมด
+                </button>
+            </div>
+            
+            <div id="builder-slots" class="space-y-3"></div>
+        </div>
+
+        <div class="lg:col-span-1">
+            <div class="sticky top-24 bg-xCard border border-xBorder rounded-[16px] shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-xBorder bg-gray-50/50">
+                    <h5 class="font-bold text-xTextMain text-base mb-0"><i class="bi bi-receipt mr-2 text-xBlue"></i> สรุปสเปคและราคา</h5>
+                </div>
+                
+                <div class="p-5">
+                    <ul class="mb-6 space-y-3" id="summary-list">
+                        <li class="text-xTextMuted text-center py-4 text-sm font-medium border border-dashed border-gray-200 rounded-xl bg-gray-50">ยังไม่ได้เลือกอุปกรณ์</li>
+                    </ul>
+                    
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold text-xTextMuted tracking-wider">พลังงานไฟฟ้ารวม (TDP)</span>
+                        <span id="total-tdp" class="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-md text-xs font-bold border border-gray-200 shadow-sm">0 W</span>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-4 border-t border-xBorder">
+                        <span class="text-sm font-bold text-xTextMain uppercase tracking-wider">ราคาสุทธิ</span>
+                        <span class="text-2xl font-black text-red-600" id="total-price">฿0</span>
+                    </div>
+                    
+                    <button onclick="analyzeBuild()" class="w-full mt-6 py-3.5 bg-xTextMain hover:bg-gray-800 text-white font-bold rounded-full transition-colors shadow-md flex justify-center items-center group" style="background-color: var(--x-text-main); color: var(--x-card-bg);">
+                        <i class="bi bi-robot text-xBlue text-lg mr-2 group-hover:scale-110 transition-transform"></i> วิเคราะห์ประสิทธิภาพ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="selectItemModal" class="fixed inset-0 z-[100] hidden">
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeModal('selectItemModal')"></div>
+    
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="bg-xCard w-full max-w-4xl max-h-[90vh] rounded-[24px] shadow-2xl flex flex-col overflow-hidden transform transition-all border border-xBorder">
+            
+            <div id="modalHeaderBar" class="h-2 w-full bg-gray-200"></div>
+            
+            <div class="px-6 py-4 flex justify-between items-center bg-xCard z-10">
+                <h5 class="text-xl font-bold text-xTextMain flex items-center" id="modalTitle">
+                    เลือกอุปกรณ์
+                </h5>
+                <button onclick="closeModal('selectItemModal')" class="text-gray-400 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            
+            <div class="px-6 pb-4 bg-xCard border-b border-xBorder z-10">
+                <div class="relative group">
+                    <i class="bi bi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-xBlue transition-colors"></i>
+                    <input type="text" id="searchInput" class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-xBlue focus:ring-4 focus:ring-blue-50 transition-all" placeholder="ค้นหาชื่อรุ่น, แบรนด์ หรือสเปค..." onkeyup="filterModalList()">
+                </div>
+            </div>
+            
+            <div id="compatibility-notice" class="hidden mx-6 mt-4 p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs font-bold text-blue-800 shadow-sm"></div>
+            
+            <div class="flex-1 overflow-y-auto p-6 bg-xBg">
+                <div id="modalLoading" class="text-center py-12">
+                    <div class="loader border-4 border-gray-200 rounded-full w-12 h-12 mx-auto mb-4"></div>
+                    <div class="font-bold text-xTextMuted text-sm">กำลังตรวจสอบความเข้ากันได้...</div>
+                </div>
+                <div id="modalAccordionList" class="hidden space-y-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="analysisModal" class="fixed inset-0 z-[100] hidden">
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal('analysisModal')"></div>
+    
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="bg-xCard w-full max-w-4xl max-h-[90vh] rounded-[24px] shadow-2xl flex flex-col overflow-hidden border border-xBorder">
+            
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="bg-xCard w-full max-w-4xl max-h-[90vh] rounded-[24px] shadow-2xl flex flex-col overflow-hidden border border-xBorder">
+            
+        <div class="px-6 py-4 bg-black flex justify-between items-center">
+            <h5 class="text-lg font-bold text-white flex items-center">
+                <i class="bi bi-stars text-yellow-300 mr-2 text-xl"></i> ผลการวิเคราะห์สเปค (Data Science Insight)
+            </h5>
+            <button onclick="closeModal('analysisModal')" class="text-white hover:text-gray-200 bg-white/10 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+            
+            <div class="flex-1 overflow-y-auto p-6 bg-xBg">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 bg-xCard p-6 rounded-[16px] border border-xBorder shadow-sm mb-4">
+                    
+                    <div class="md:col-span-5 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-200 pb-6 md:pb-0 md:pr-6">
+                        <div class="text-xs font-bold text-xTextMuted uppercase tracking-widest mb-3">System Balance</div>
+                        <div id="scoreCircleBg" class="w-28 h-28 rounded-full flex items-center justify-center text-3xl font-black text-white shadow-lg bg-gradient-to-br from-emerald-400 to-emerald-700 mb-4 transition-all duration-500">
+                            <span id="analyzeMatch">0%</span>
+                        </div>
+                        <h6 class="text-xs font-bold text-xTextMuted mb-1 uppercase">ระดับความแรงรวม</h6>
+                        <h4 id="analyzeTier" class="text-lg font-black text-xTextMain mb-0">-</h4>
+
+                        <div class="mt-4 w-full p-3 rounded-xl bg-blue-50 border border-blue-100 text-center" style="background-color: rgba(29, 155, 240, 0.1); border-color: rgba(29, 155, 240, 0.2);">
+                            <span class="text-xs font-bold text-blue-600 block mb-1"><i class="bi bi-tag-fill"></i> ระบบจัดให้อยู่ในหมวด</span>
+                            <span id="autoDetectedCategory" class="text-sm font-bold text-xTextMain block">-</span>
+                        </div>
+
+                        <div class="mt-3 w-full p-3 rounded-xl bg-green-50 border border-green-100 text-center" style="background-color: rgba(25, 135, 84, 0.1); border-color: rgba(25, 135, 84, 0.2);">
+                            <span class="text-xs font-bold text-green-600 block mb-1"><i class="bi bi-robot"></i> ระบบประเมินความคุ้มค่า</span>
+                            <span id="aiGlobalRank" class="text-base font-bold text-xTextMain block">กำลังประเมิน...</span>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-7 md:pl-2 flex flex-col justify-center">
+                        <h6 class="text-sm font-bold mb-4 text-xTextMain"><i class="bi bi-speedometer2 text-xBlue mr-2"></i> ประสิทธิภาพ 4 มิติ (Performance Analysis)</h6>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-red-500">GAMING (GPU)</span><span id="barGamingText" class="text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5"><div id="barGaming" class="bg-red-500 h-1.5 rounded-full transition-all duration-1000" style="width: 0%;"></div></div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-cyan-500">WORK (CPU)</span><span id="barWorkText" class="text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5"><div id="barWork" class="bg-cyan-500 h-1.5 rounded-full transition-all duration-1000" style="width: 0%;"></div></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-green-500">SYSTEM BALANCE</span><span id="barBalanceText" class="text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5"><div id="barBalance" class="bg-green-500 h-1.5 rounded-full transition-all duration-1000" style="width: 0%;"></div></div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-amber-500">VALUE (ความคุ้มค่า)</span><span id="barValueText" class="text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5"><div id="barValue" class="bg-amber-500 h-1.5 rounded-full transition-all duration-1000" style="width: 0%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-xCard p-4 rounded-[16px] border border-xBorder shadow-sm mb-4">
+                    <h6 class="text-xs font-bold border-b border-gray-100 pb-2 mb-3 text-xTextMuted uppercase tracking-wider">
+                        <i class="bi bi-info-circle-fill text-xBlue mr-1"></i> AI Technical Details
+                    </h6>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-[10px] text-gray-500 uppercase font-bold">Active Model</div>
+                            <div id="activeModelName" class="text-sm font-bold text-xTextMain">Loading...</div>
+                        </div>
+                        <div>
+                            <div class="text-[10px] text-gray-500 uppercase font-bold">Input Features (Scaled)</div>
+                            <div id="scaledFeaturesText" class="text-sm font-bold text-xTextMain">CPU: - | GPU: -</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-xCard p-5 rounded-[16px] border border-xBorder shadow-sm">
+                    <h6 class="text-sm font-bold mb-3 text-xTextMain border-b border-gray-100 pb-2"><i class="bi bi-search text-xBlue mr-2"></i> วิเคราะห์เจาะลึก (Diagnostics)</h6>
+                    <ul id="analyzeDiagnostics" class="space-y-2 text-sm">
+                    </ul>
+                </div>
+                
+            </div>
+            <div class="p-4 bg-xCard border-t border-xBorder text-right rounded-b-[24px]">
+                <button onclick="closeModal('analysisModal')" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-full text-sm transition-colors" style="background-color: var(--x-border); color: var(--x-text-main);">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // สคริปต์สลับโหมด กลางวัน-กลางคืน
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        const htmlElement = document.documentElement;
+
+        const savedTheme = localStorage.getItem('specx-theme') || 'light';
+        htmlElement.setAttribute('data-bs-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('specx-theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'bi bi-sun-fill text-amber-400';
+            } else {
+                themeIcon.className = 'bi bi-moon-stars-fill';
+            }
+        }
+    });
+
+    const DB = {
+        cpu: {{ cpu_json|safe }}, mb: {{ mb_json|safe }}, gpu: {{ gpu_json|safe }},
+        ram: {{ ram_json|safe }}, ssd: {{ hdd_json|safe }}, psu: {{ psu_json|safe }},
+        case: {{ case_json|safe }},
+    };
+
+    (DB.gpu || []).forEach(g => {
+        let name = String(g.name_gpu).toUpperCase();
+        if (name.includes('RTX') || name.includes('GTX') || name.includes('GEFORCE') || name.includes('QUADRO') || name.includes('TESLA') || name.includes('TITAN')) {
+            g.brand_gpu = 'NVIDIA';
+        } else if (name.includes('RX ') || name.includes('RADEON') || name.includes('PRO WX') || name.includes('FIREPRO')) {
+            g.brand_gpu = 'AMD';
+        } else if (name.includes('ARC ') || name.includes('INTEL')) {
+            g.brand_gpu = 'INTEL';
+        } else {
+            g.brand_gpu = 'ทั่วไป (Others)';
+        }
+    });
+
+    const categories = [
+        { id: 'cpu', name: 'Processor (ซีพียู)', icon: 'bi-cpu-fill', key_name: 'name_cpu', groupBy: 'brand_cpu', details: ['socket_cpu', 'cores_threads_cpu'], 
+          themeColor: 'blue', colorText: 'text-blue-500', colorBg: 'bg-blue-50', hoverText: 'group-hover:text-blue-600', activeBorder: 'border-blue-300' },
+          
+        { id: 'mb', name: 'Mainboard (เมนบอร์ด)', icon: 'bi-motherboard-fill', key_name: 'name_mainboards', groupBy: 'socket_mainboards', details: ['category_mainboards', 'specifications_mainboards'], 
+          themeColor: 'amber', colorText: 'text-amber-500', colorBg: 'bg-amber-50', hoverText: 'group-hover:text-amber-600', activeBorder: 'border-amber-300' },
+          
+        { id: 'ram', name: 'Memory (แรม)', icon: 'bi-memory', key_name: 'name__ram', groupBy: 'clean_ddr', details: ['capacity_gb', 'bus_speed_ram'], 
+          themeColor: 'red', colorText: 'text-red-500', colorBg: 'bg-red-50', hoverText: 'group-hover:text-red-600', activeBorder: 'border-red-300' },
+          
+        { id: 'gpu', name: 'Graphics (การ์ดจอ)', icon: 'bi-gpu-card', key_name: 'name_gpu', groupBy: 'brand_gpu', details: ['passmark_gpu', 'rank_gpu'], 
+          themeColor: 'green', colorText: 'text-green-600', colorBg: 'bg-green-50', hoverText: 'group-hover:text-green-600', activeBorder: 'border-green-300' },
+          
+        { id: 'ssd', name: 'Storage (พื้นที่เก็บข้อมูล)', icon: 'bi-device-hdd-fill', key_name: 'storage_name', groupBy: 'type_hdd', details: ['size_hdd', 'read_speed_hdd'], 
+          themeColor: 'cyan', colorText: 'text-cyan-500', colorBg: 'bg-cyan-50', hoverText: 'group-hover:text-cyan-600', activeBorder: 'border-cyan-300' },
+          
+        { id: 'psu', name: 'Power Supply (พาวเวอร์ซัพพลาย)', icon: 'bi-plug-fill', key_name: 'name_powersupplies', groupBy: 'category_powersupplies', details: ['wattage'], 
+          themeColor: 'gray', colorText: 'text-gray-500', colorBg: 'bg-gray-100', hoverText: 'group-hover:text-gray-800', activeBorder: 'border-gray-300' },
+          
+        { id: 'case', name: 'Case (เคสคอมพิวเตอร์)', icon: 'bi-pc', key_name: 'model_name_case', groupBy: 'form_factor_case', details: ['brand_case', 'description_case'], 
+          themeColor: 'indigo', colorText: 'text-indigo-500', colorBg: 'bg-indigo-50', hoverText: 'group-hover:text-indigo-600', activeBorder: 'border-indigo-300' }
+    ];
+
+    let currentBuild = {};
+    let currentSelectingCategory = '';
+    let currentModalItems = []; 
+
+    function openModal(modalId) { document.getElementById(modalId).classList.remove('hidden'); }
+    function closeModal(modalId) { document.getElementById(modalId).classList.add('hidden'); }
+    
+    function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        const icon = document.getElementById('icon-' + id);
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.classList.replace('bi-chevron-down', 'bi-chevron-up');
+        } else {
+            content.classList.add('hidden');
+            icon.classList.replace('bi-chevron-up', 'bi-chevron-down');
+        }
+    }
+
+    function init() { renderSlots(); updateSummary(); }
+
+    function renderSlots() {
+        const container = document.getElementById('builder-slots');
+        if(!container) return;
+        container.innerHTML = '';
+        
+        categories.forEach(cat => {
+            const selectedItem = currentBuild[cat.id];
+            const isFilled = selectedItem ? true : false;
+            
+            const iconColor = cat.colorText;
+            const iconBg = cat.colorBg;
+            const activeBorder = isFilled ? cat.activeBorder : 'border-xBorder';
+            const cardBg = isFilled ? 'bg-xCard shadow-sm' : 'bg-xCard';
+            
+            const itemName = selectedItem ? selectedItem[cat.key_name] : '<span class="text-gray-400 font-bold text-sm">คลิกปุ่มเพื่อเลือกอุปกรณ์...</span>';
+            const itemPrice = selectedItem ? `฿${selectedItem.price.toLocaleString()}` : '';
+            const removeBtn = selectedItem ? `<button class="text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors ml-2" onclick="removeItem('${cat.id}')" title="ลบออก"><i class="bi bi-trash3-fill"></i></button>` : '';
+
+            container.innerHTML += `
+                <div class="p-4 border ${activeBorder} ${cardBg} rounded-[16px] transition-all hover:shadow-md flex items-center justify-between group">
+                    <div class="flex items-center flex-1 overflow-hidden pr-4">
+                        <div class="w-12 h-12 flex items-center justify-center ${iconBg} rounded-[12px] ${iconColor} text-xl flex-shrink-0" style="background-color: ${isFilled ? 'var(--x-hover-bg)' : ''};">
+                            <i class="bi ${cat.icon}"></i>
+                        </div>
+                        <div class="ml-4 flex-1 truncate">
+                            <h6 class="text-[10px] uppercase font-bold text-xTextMuted tracking-wider mb-0.5">${cat.name}</h6>
+                            <div class="text-sm font-bold text-xTextMain truncate">${itemName}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center flex-shrink-0">
+                        <div class="text-xTextMain font-black text-sm text-right min-w-[70px] mr-4">${itemPrice}</div>
+                        <button class="px-4 py-1.5 text-xs font-bold rounded-full border border-xBorder hover:bg-gray-100 transition-colors text-xTextMain shadow-sm" style="background-color: var(--x-bg-body);" onclick="openSelectModal('${cat.id}')"> 
+                            ${selectedItem ? 'เปลี่ยน' : 'เลือก'} 
+                        </button>
+                        ${removeBtn}
+                    </div>
+                </div>`;
+        });
+    }
+
+    function openSelectModal(catId) {
+        currentSelectingCategory = catId;
+        const catConfig = categories.find(c => c.id === catId);
+        
+        document.getElementById('modalTitle').innerHTML = `
+            <div class="w-10 h-10 rounded-xl ${catConfig.colorBg} ${catConfig.colorText} flex items-center justify-center mr-3 text-lg" style="background-color: var(--x-hover-bg);">
+                <i class="bi ${catConfig.icon}"></i>
+            </div>
+            เลือก ${catConfig.name}
+        `;
+        document.getElementById('modalHeaderBar').className = `h-2 w-full bg-${catConfig.themeColor}-500`;
+        document.getElementById('searchInput').value = '';
+        document.getElementById('modalLoading').style.display = 'block';
+        document.getElementById('modalAccordionList').style.display = 'none';
+        document.getElementById('compatibility-notice').style.display = 'none';
+        
+        openModal('selectItemModal');
+
+        setTimeout(() => {
+            let items = DB[catId] || [];
+            let notices = [];
+
+            if (catId === 'mb' && currentBuild.cpu) {
+                items = items.filter(m => m.clean_socket === currentBuild.cpu.clean_socket);
+                notices.push(`แสดงเฉพาะบอร์ด Socket <b>${currentBuild.cpu.clean_socket}</b>`);
+            }
+            if (catId === 'cpu' && currentBuild.mb) {
+                items = items.filter(c => c.clean_socket === currentBuild.mb.clean_socket);
+                notices.push(`แสดงเฉพาะ CPU Socket <b>${currentBuild.mb.clean_socket}</b>`);
+            }
+            if (catId === 'ram' && currentBuild.mb) {
+                let mbDDR = String(currentBuild.mb.specifications_mainboards).includes('DDR5') ? 'DDR5' : 'DDR4';
+                items = items.filter(r => r.clean_ddr === mbDDR);
+                notices.push(`เมนบอร์ดของคุณรองรับเฉพาะ RAM ชนิด <b>${mbDDR}</b>`);
+            }
+            if (catId === 'gpu' && currentBuild.case) {
+                if (String(currentBuild.case.form_factor_case).toUpperCase().includes('ITX')) {
+                    items = items.filter(g => (g.est_tdp || 0) <= 200);
+                    notices.push(`ซ่อนการ์ดจอขนาดใหญ่ เพื่อให้ใส่เคส Mini-ITX ของคุณได้`);
+                }
+            }
+            if (catId === 'case' && currentBuild.gpu) {
+                if ((currentBuild.gpu.est_tdp || 0) > 200) {
+                    items = items.filter(c => !String(c.form_factor_case).toUpperCase().includes('ITX'));
+                    notices.push(`ซ่อนเคส Mini-ITX เพราะการ์ดจอของคุณมีขนาดใหญ่เกินไป`);
+                }
+            }
+            if (catId === 'psu' && (currentBuild.cpu || currentBuild.gpu)) {
+                let sysWatts = 50 + (currentBuild.cpu ? currentBuild.cpu.est_tdp : 0) + (currentBuild.gpu ? currentBuild.gpu.est_tdp : 0) + 100;
+                items = items.filter(p => {
+                    let wMatch = String(p.name_powersupplies).match(/(\d+)\s*W/i);
+                    let w = wMatch ? parseInt(wMatch[1]) : (p.wattage || 500);
+                    return w >= sysWatts;
+                });
+                notices.push(`กรองเฉพาะพาวเวอร์ซัพพลายขนาด <b>${sysWatts}W ขึ้นไป</b>`);
+            }
+
+            if (notices.length > 0) {
+                const noticeBox = document.getElementById('compatibility-notice');
+                noticeBox.innerHTML = notices.map(n => `<div class="mb-1"><i class="bi bi-shield-check mr-1"></i> ${n}</div>`).join('');
+                noticeBox.style.display = 'block';
+            }
+
+            items.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+            currentModalItems = items; 
+            renderGroupedList(items, catConfig);
+            
+            document.getElementById('modalLoading').style.display = 'none';
+            document.getElementById('modalAccordionList').style.display = 'block';
+        }, 100);
+    }
+
+    function renderGroupedList(items, catConfig) {
+        const accordionContainer = document.getElementById('modalAccordionList');
+        if (items.length === 0) {
+            accordionContainer.innerHTML = `<div class="text-center text-gray-400 py-12 font-bold"><i class="bi bi-x-circle text-4xl block mb-3 text-gray-300"></i> ไม่พบอุปกรณ์ที่เข้ากันได้กับสเปคเดิมของคุณ</div>`;
+            return;
+        }
+
+        const groupedData = {};
+        items.forEach((item, index) => {
+            let groupValue = String(item[catConfig.groupBy] || 'ทั่วไป (Others)').trim();
+            if (groupValue === '' || groupValue === 'nan') groupValue = 'ทั่วไป (Others)';
+            if (!groupedData[groupValue]) groupedData[groupValue] = [];
+            item._globalIndex = index; 
+            groupedData[groupValue].push(item);
+        });
+
+        let htmlArray = [];
+        let groupCounter = 0;
+        
+        Object.keys(groupedData).sort().forEach(groupName => {
+            groupCounter++;
+            const isFirst = groupCounter === 1;
+            const hiddenClass = isFirst ? '' : 'hidden';
+            const iconClass = isFirst ? 'bi-chevron-up' : 'bi-chevron-down';
+
+            htmlArray.push(`
+                <div class="bg-xCard border border-xBorder rounded-2xl overflow-hidden search-group-item shadow-sm">
+                    <button onclick="toggleAccordion('grp${groupCounter}')" class="w-full px-5 py-4 bg-xCard hover:bg-gray-50 flex justify-between items-center transition-colors border-b border-transparent">
+                        <div class="font-bold text-xTextMain text-sm flex items-center">
+                            <i class="bi bi-folder2-open ${catConfig.colorText} mr-3 text-lg"></i> ${groupName} 
+                            <span class="ml-3 bg-xBg text-xTextMuted px-2 py-0.5 rounded-md text-[10px] border border-xBorder">${groupedData[groupName].length}</span>
+                        </div>
+                        <i id="icon-grp${groupCounter}" class="bi ${iconClass} text-gray-400"></i>
+                    </button>
+                    <div id="grp${groupCounter}" class="${hiddenClass} border-t border-xBorder">
+                        <ul class="divide-y divide-gray-100">
+            `);
+
+            groupedData[groupName].forEach(item => {
+                let specTexts = (catConfig.details || []).map(f => item[f] && item[f] !== 'nan' ? `<span class="font-bold text-xTextMuted">${f.split('_')[0].toUpperCase()}:</span> ${item[f]}` : '').filter(Boolean);
+                let specHtml = specTexts.length > 0 ? `<div class="text-[11px] text-gray-500 mt-1.5 font-medium">${specTexts.join(' <span class="text-gray-300 mx-1">•</span> ')}</div>` : '';
+
+                htmlArray.push(`
+                    <li class="p-4 hover:bg-gray-50 cursor-pointer transition-all search-item group" onclick="selectItem(${item._globalIndex})">
+                        <div class="flex justify-between items-center">
+                            <div class="pr-4 flex-1">
+                                <div class="font-bold text-xTextMain text-sm ${catConfig.hoverText} transition-colors">${item[catConfig.key_name]}</div>
+                                ${specHtml}
+                            </div>
+                            <div class="text-right pl-4 border-l border-gray-100 min-w-[90px] flex flex-col justify-center items-end">
+                                <div class="text-red-600 font-black text-sm">฿${parseFloat(item.price).toLocaleString()}</div>
+                                <div class="text-[10px] text-gray-400 font-bold uppercase mt-1 ${catConfig.hoverText} opacity-0 group-hover:opacity-100 transition-opacity flex items-center">เลือก <i class="bi bi-plus-circle-fill ml-1"></i></div>
+                            </div>
+                        </div>
+                    </li>`);
+            });
+            htmlArray.push(`</ul></div></div>`);
+        });
+        accordionContainer.innerHTML = htmlArray.join('');
+    }
+
+    let searchTimeout = null;
+
+    function filterModalList() {
+        if (searchTimeout) {
+            clearTimeout(searchTimeout);
+        }
+
+        searchTimeout = setTimeout(() => {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            
+            document.querySelectorAll('.search-group-item').forEach(group => {
+                let hasVisible = false;
+                
+                group.querySelectorAll('.search-item').forEach(item => {
+                    if(item.textContent.toLowerCase().includes(keyword)) { 
+                        item.style.display = ''; 
+                        hasVisible = true; 
+                    } else { 
+                        item.style.display = 'none'; 
+                    }
+                });
+                
+                if (hasVisible) {
+                    group.style.display = '';
+                    if(keyword !== '') {
+                        const contentId = group.querySelector('div[id^="grp"]').id;
+                        const content = document.getElementById(contentId);
+                        const icon = document.getElementById('icon-' + contentId);
+                        content.classList.remove('hidden');
+                        if (icon) icon.classList.replace('bi-chevron-down', 'bi-chevron-up');
+                    }
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        }, 300);
+    }
+
+    function selectItem(index) {
+        currentBuild[currentSelectingCategory] = currentModalItems[index];
+        closeModal('selectItemModal');
+        renderSlots();
+        updateSummary();
+    }
+
+    function removeItem(catId) { delete currentBuild[catId]; renderSlots(); updateSummary(); }
+
+    function updateSummary() {
+        let total = 0, watts = 50;
+        const summaryList = document.getElementById('summary-list');
+        
+        summaryList.innerHTML = categories.map(c => {
+            if(!currentBuild[c.id]) return '';
+            let p = parseFloat(currentBuild[c.id].price);
+            total += p; 
+            watts += parseInt(currentBuild[c.id].est_tdp || 0);
+            
+            return `
+                <li class="flex justify-between items-start pb-2 border-b border-xBorder text-sm">
+                    <span class="text-xTextMuted font-medium pr-4 line-clamp-2">${currentBuild[c.id][c.key_name]}</span>
+                    <span class="text-xTextMain font-bold whitespace-nowrap">฿${Math.floor(p).toLocaleString()}</span>
+                </li>`;
+        }).join('') || `<li class="text-xTextMuted text-center py-4 text-sm font-medium border border-dashed border-xBorder rounded-xl bg-xBg">ยังไม่ได้เลือกอุปกรณ์</li>`;
+        
+        document.getElementById('total-price').innerText = `฿${Math.floor(total).toLocaleString()}`;
+        document.getElementById('total-tdp').innerText = `${watts} W`;
+    }
+
+    function resetBuild() { if(confirm('เริ่มจัดใหม่ทั้งหมด?')) { currentBuild = {}; renderSlots(); updateSummary(); } }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    async function analyzeBuild() {
+        if(!currentBuild.cpu || !currentBuild.mb || !currentBuild.gpu || !currentBuild.ram || !currentBuild.ssd || !currentBuild.psu) {
+            alert("⚠️ กรุณาเลือกชิ้นส่วนให้ครบทุกชิ้นก่อนทำการวิเคราะห์ เพื่อผลลัพธ์ที่แม่นยำ");
+            return;
+        }
+
+        openModal('analysisModal');
+        
+        let raw_c = currentBuild.cpu.score || 0;
+        let raw_g = currentBuild.gpu.score || 0;
+        let ram_gb = currentBuild.ram.capacity_gb || 8; 
+        let total_price = 0;
+        categories.forEach(c => { if(currentBuild[c.id]) total_price += parseFloat(currentBuild[c.id].price); });
+
+        let score_gaming = Math.min(100, (raw_g / 35000) * 100); 
+        let score_creator = Math.min(100, ((raw_c / 45000) * 0.5 + (raw_g / 30000) * 0.3 + Math.min(1, ram_gb / 32) * 0.2) * 100);
+        
+        let autoUsageType = 'gaming';
+        let detectedCategoryName = '🎮 สายเกมมิ่ง (Gaming)';
+
+        if (raw_g < 4000 || (raw_c < 15000 && raw_g < 8000)) {
+            autoUsageType = 'work';
+            detectedCategoryName = '💼 สายทำงานออฟฟิศ (Office)';
+        } else if (ram_gb >= 32 && raw_c >= 25000) {
+            autoUsageType = 'creator';
+            detectedCategoryName = '🎨 สายกราฟิก/ตัดต่อ (Creator)';
+        } else if (score_gaming >= score_creator && raw_g >= 10000) {
+            autoUsageType = 'gaming';
+            detectedCategoryName = '🎮 สายเกมมิ่ง (Gaming)';
+        } else if (score_creator > score_gaming) {
+            autoUsageType = 'creator';
+            detectedCategoryName = '🎨 สายกราฟิก/ตัดต่อ (Creator)';
+        }
+
+        document.getElementById('autoDetectedCategory').innerText = detectedCategoryName;
+        document.getElementById('aiGlobalRank').innerText = "กำลังประเมินด้วย ML...";
+        document.getElementById('aiGlobalRank').className = "text-base font-bold text-gray-500 block animate-pulse";
+
+        try {
+            const response = await fetch('/api/analyze-build/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+                body: JSON.stringify({ cpu_score: raw_c, gpu_score: raw_g, total_price: total_price, usage_type: autoUsageType })
+            });
+            const data = await response.json();
+            if(data.status === 'success') {
+                document.getElementById('activeModelName').innerText = data.model_details.model_name;
+                document.getElementById('scaledFeaturesText').innerText = `CPU: ${data.model_details.scaled_cpu} | GPU: ${data.model_details.scaled_gpu}`;
+                document.getElementById('aiGlobalRank').innerText = data.ai_rank;
+                document.getElementById('aiGlobalRank').className = "text-xl font-black text-green-600 block";
+            } else {
+                document.getElementById('aiGlobalRank').innerText = "เกิดข้อผิดพลาด";
+            }
+        } catch (error) {
+            document.getElementById('aiGlobalRank').innerText = "ไม่สามารถเชื่อมต่อได้";
+        }
+
+        let gaming_score = Math.min(100, (raw_g / 35000) * 100);
+        let work_score = Math.min(100, (raw_c / 45000) * 100);
+        let ratio = Math.max(raw_c, raw_g) > 0 ? Math.min(raw_c, raw_g) / Math.max(raw_c, raw_g) : 0;
+        let balance_score = Math.min(100, (ratio / (total_price > 60000 ? 0.70 : 0.85)) * 100);
+        let value_score = Math.min(100, ((total_price > 0 ? ((raw_c + raw_g) / total_price) : 0) / 2.2) * 100);
+
+        setTimeout(() => {
+            document.getElementById('barGaming').style.width = `${Math.round(gaming_score)}%`; document.getElementById('barGamingText').innerText = `${Math.round(gaming_score)}%`;
+            document.getElementById('barWork').style.width = `${Math.round(work_score)}%`; document.getElementById('barWorkText').innerText = `${Math.round(work_score)}%`;
+            document.getElementById('barBalance').style.width = `${Math.round(balance_score)}%`; document.getElementById('barBalanceText').innerText = `${Math.round(balance_score)}%`;
+            document.getElementById('barValue').style.width = `${Math.round(value_score)}%`; document.getElementById('barValueText').innerText = `${Math.round(value_score)}%`;
+        }, 300);
+
+        document.getElementById('analyzeMatch').innerText = `${Math.round(balance_score)}%`;
+        
+        const sc_circle = document.getElementById('scoreCircleBg');
+        sc_circle.className = sc_circle.className.replace(/from-\w+-\d+ to-\w+-\d+/, '');
+        if(balance_score >= 80) sc_circle.classList.add('from-emerald-400', 'to-emerald-700');
+        else if (balance_score >= 60) sc_circle.classList.add('from-amber-400', 'to-amber-700');
+        else sc_circle.classList.add('from-red-400', 'to-red-700');
+
+        let z_cpu = Math.min(100, (raw_c / 65000) * 100);
+        let z_gpu = Math.min(100, (raw_g / 40000) * 100);
+        let finalIndex = (((z_cpu + z_gpu) / 2) * 0.7) + (balance_score * 0.3);
+
+        let tier = finalIndex >= 65 ? "High-End (ระดับท็อป)" : (finalIndex >= 35 ? "Mainstream (ระดับมาตรฐาน)" : "Entry-Level (ระดับเริ่มต้น)");
+        let color = finalIndex >= 65 ? "text-red-600" : (finalIndex >= 35 ? "text-green-600" : "text-gray-600");
+        document.getElementById('analyzeTier').innerText = tier;
+        document.getElementById('analyzeTier').className = `text-lg font-black mb-0 ${color}`;
+
+        // ==========================================
+        // 🚀 ระบบวิเคราะห์เจาะลึกโดย AI (Spec X Diagnostics)
+        // ==========================================
+        let diagHtml = "";
+        let deviation = Math.abs(z_cpu - z_gpu);
+        
+        // ใช้ Class พื้นฐานที่รองรับทั้ง Light และ Discord Dark Mode
+        let diagBaseClass = "p-4 rounded-2xl border-l-4 mb-3 bg-white dark:bg-[#2b2d31] shadow-sm flex items-start text-sm transition-all hover:translate-x-1";
+
+        // 1. วิเคราะห์ความสมดุล (Bottleneck Analysis)
+        if (deviation <= 15) {
+            diagHtml += `
+                <li class="${diagBaseClass} border-l-emerald-500">
+                    <i class="bi bi-check-circle-fill text-emerald-500 mr-3 text-lg"></i>
+                    <div>
+                        <b class="text-xTextMain dark:text-white block mb-1">Perfect Synergy (ความสมดุลยอดเยี่ยม)</b>
+                        <span class="text-xTextMuted dark:text-dTextMuted text-xs">CPU และ GPU ของคุณทำงานสอดประสานกันได้เต็มประสิทธิภาพ 100% ไม่พบอาการคอขวดที่ส่งผลต่อการเล่นเกมหรือทำงานหนัก</span>
+                    </div>
+                </li>`;
+        } else if (z_cpu - z_gpu > 15) {
+            diagHtml += `
+                <li class="${diagBaseClass} border-l-amber-500">
+                    <i class="bi bi-exclamation-triangle-fill text-amber-500 mr-3 text-lg"></i>
+                    <div>
+                        <b class="text-xTextMain dark:text-white block mb-1">Potential GPU Bottleneck (การ์ดจอตามไม่ทัน)</b>
+                        <span class="text-xTextMuted dark:text-dTextMuted text-xs">ซีพียูของคุณมีกำลังประมวลผลเหลือเฟือ แต่การ์ดจออาจทำงานหนักจนสุดเพดานก่อน แนะนำให้อัปเกรดการ์ดจอในอนาคตหากต้องการเล่นเกมที่ความละเอียดสูงขึ้น</span>
+                    </div>
+                </li>`;
+        } else {
+            diagHtml += `
+                <li class="${diagBaseClass} border-l-amber-500">
+                    <i class="bi bi-exclamation-triangle-fill text-amber-500 mr-3 text-lg"></i>
+                    <div>
+                        <b class="text-xTextMain dark:text-white block mb-1">Potential CPU Bottleneck (ซีพียูแบกไม่ไหว)</b>
+                        <span class="text-xTextMuted dark:text-dTextMuted text-xs">การ์ดจอของคุณแรงมากจนซีพียูอาจขับประสิทธิภาพออกมาได้ไม่หมด อาจพบอาการเฟรมเรตแกว่งในบางจังหวะ แนะนำให้ขยับไปใช้ซีพียูรุ่นที่สูงขึ้นเพื่อให้ได้ความลื่นไหลสูงสุด</span>
+                    </div>
+                </li>`;
+        }
+
+        // 2. วิเคราะห์หน่วยความจำ (RAM Insight)
+        if (ram_gb >= 32) {
+            diagHtml += `
+                <li class="${diagBaseClass} border-l-blue-500">
+                    <i class="bi bi-lightning-charge-fill text-blue-500 mr-3 text-lg"></i>
+                    <div>
+                        <b class="text-xTextMain dark:text-white block mb-1">Multitasking Beast (สายแบกงานหนัก)</b>
+                        <span class="text-xTextMuted dark:text-dTextMuted text-xs">RAM ${ram_gb}GB คือระดับ Workstation คุณสามารถสตรีมเกมไปพร้อมกับเปิดโปรแกรมตัดต่อ หรือเปิดเบราว์เซอร์หลายสิบ Tab ได้โดยไม่มีอาการหน่วง</span>
+                    </div>
+                </li>`;
+        } else if (ram_gb >= 16) {
+            diagHtml += `
+                <li class="${diagBaseClass} border-l-blue-500">
+                    <i class="bi bi-info-circle-fill text-blue-500 mr-3 text-lg"></i>
+                    <div>
+                        <b class="text-xTextMain dark:text-white block mb-1">Optimal Gaming Standard (มาตรฐานเกมเมอร์)</b>
+                        <span class="text-xTextMuted dark:text-dTextMuted text-xs">ความจุ 16GB สำหรับปี 2026 เพียงพอสำหรับการเล่นเกม AAA ทุกเกมในปัจจุบันและการใช้งานทั่วไปได้อย่างราบรื่น</span>
+                    </div>
+                </li>`;
+        } else {
+            diagHtml += `
+                <li class="${diagBaseClass} border-l-red-500">
+                    <i class="bi bi-shield-exclamation text-red-500 mr-3 text-lg"></i>
+                    <div>
+                        <b class="text-xTextMain dark:text-white block mb-1">Memory Warning (ความจุค่อนข้างจำกัด)</b>
+                        <span class="text-xTextMuted dark:text-dTextMuted text-xs">RAM ${ram_gb}GB อาจเริ่มไม่เพียงพอสำหรับระบบปฏิบัติการและเกมรุ่นใหม่ แนะนำให้พิจารณาเพิ่มเป็น 16GB เพื่อป้องกันอาการกระตุกขณะสลับหน้าจอ</span>
+                    </div>
+                </li>`;
+        }
+
+        // 3. วิเคราะห์พื้นที่เก็บข้อมูล (Storage Performance)
+        let storageItem = currentBuild.ssd;
+        let storageName = String(storageItem.storage_name || "").toUpperCase();
+        if (storageName.includes('NVME') || storageName.includes('PCIE')) {
+            diagHtml += `
+                <li class="${diagBaseClass} border-l-cyan-500">
+                    <i class="bi bi-speedometer text-cyan-500 mr-3 text-lg"></i>
+                    <div>
+                        <b class="text-xTextMain dark:text-white block mb-1">Hyper-Speed Loading (โหลดไวทันใจ)</b>
+                        <span class="text-xTextMuted dark:text-dTextMuted text-xs">การเลือกใช้ NVMe SSD จะทำให้การเปิดเครื่องและเข้าเกมแทบไม่ต้องรอ เหมาะสำหรับผู้ที่เน้นความไวในการทำงานเป็นหลัก</span>
+                    </div>
+                </li>`;
+        }
+
+        // 4. บทสรุปจาก AI (Final Verdict)
+        if (balance_score >= 80) {
+            diagHtml += `
+                <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 text-center">
+                    <div class="text-emerald-500 font-black text-lg mb-1 italic">"SPEC X VERDICT: HIGHLY RECOMMENDED"</div>
+                    <p class="text-xs text-emerald-700 dark:text-emerald-400 font-bold">สเปคนี้จัดสรรงบประมาณได้ฉลาดมาก ทุกส่วนส่งเสริมกัน ซื้อไปประกอบได้ทันที</p>
+                </div>`;
+        } else {
+            diagHtml += `
+                <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 text-center">
+                    <div class="text-amber-600 dark:text-amber-400 font-black text-lg mb-1 italic">"SPEC X VERDICT: NEEDS ADJUSTMENT"</div>
+                    <p class="text-xs text-amber-800 dark:text-amber-200 font-bold">สเปคนี้ใช้งานได้จริง แต่ยังมีจุดที่ปรับจูนให้คุ้มค่ากว่านี้ได้</p>
+                </div>`;
+        }
+
+        document.getElementById('analyzeDiagnostics').innerHTML = diagHtml;
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+</script>
+
+</body>
+</html>

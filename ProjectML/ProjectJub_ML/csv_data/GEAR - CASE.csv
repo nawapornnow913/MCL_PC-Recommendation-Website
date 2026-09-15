@@ -1,0 +1,113 @@
+form_factor_case,brand_case,model_name_case,description_case,warranty_case,price_case
+mATX,CUBIC,AXIS BLACK,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(1)/Bottom 0(0) / Bay 3.5''x1/2.5''x1,1Y,550
+mATX,COLD,COOL CASE SC1 BLACK FAN*1,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 3.5''x1/2.5''x2,1Y,590
+mATX,COLD,COOL CASE SC1 WHITE FAN*1,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(0)/PSU Shroud 0(0) / Bay 3.5''x1/2.5''x2,1Y,590
+mATX,COLD,COOL CASE SC1 BLUE FAN*1,No Power / 3xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 3.5''x1/2.5''x2,1Y,510
+mATX,COLD,COOL CASE SC1 RED FAN*1,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 3.5''x1/2.5''x2,1Y,560
+mATX,CUBIC,DEEPER BLACK,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(1)/Bottom 0(0) / Bay 3.5''x1/2.5''x1,1Y,590
+mATX,CUBIC,REACTOR BLACK,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(0)/ side 1(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,570
+mATX,CUBIC,REACTOR WHITE,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(0)/ side 1(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,590
+mATX,CUBIC,PHILIA BLACK,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(0)/ side 1(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,590
+mATX,CUBIC,PHILIA WHITE,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(0)/ side 1(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,590
+mATX,CUBIC,TRIDENT BLACK,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(1)/ side 1(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,590
+mATX,CUBIC,TRIDENT WHITE,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(0)/ side 1(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,590
+mATX,CUBIC,NIO BLACK,No Power / 3xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(1)/Bottom 0(0) / Bay 3.5''x1/2.5''x1,1Y,620
+mATX,CUBIC,RAVEN BLACK,No Power / 2xUSB / Fan Support Rear 1(0)/Side 1(1) / Bay 5.25''x1/3.5''x1/2.5''x1,1Y,650
+mATX,AEROCOOL,CS-110-S-BK-V1 BLACK,No Power / 2xUSB / Fan Support Front 0(0)/Top 0(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,720
+mATX,CUBIC,BOOMERANG RGB BLACK,No Power / 2xUSB / Fan Support Rear 1(0)/Side 1(1) / Bay 5.25''x1/3.5''x1/2.5''x1,1Y,720
+mATX,CUBIC,CYBER RGB BLACK,No Power / 2xUSB / Fan Support Rear 1(0)/Side 1(1) / Bay 5.25''x0/3.5''x1/2.5''x2,1Y,720
+mATX,CUBIC,FLIPPER TG BLACK,No Power / 2xUSB / Fan Support Front 1(1)/Top 0(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,850
+mATX,COLD,COOL CASE SC9 BLACK,No Power / 3xUSB / Fan Support Front 0(0)/Top 2(2)/Rear 1(1)/ PSU Cover 2(0) / Side 0(0) / Bay 5.25''x0/3.5''x1/2.5''x1,1Y,790
+mATX,COLD,COOL CASE SC9 WHITE,No Power / 3xUSB / Fan Support Front 0(0)/Top 2(2)/Rear 1(1)/ PSU Cover 2(0) / Side 0(0) / Bay 5.25''x0/3.5''x1/2.5''x1,1Y,850
+mATX,COLD,COOL CASE SC3 BLACK FAN*4,No Power / 3xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(1)/PSU Shroud 2(0) / Bay 5.25''x0/3.5''x3/2.5''x5,1Y,990
+mATX,ANTEC,VCX20M RGB ELITE BLACK,No Power / 2xUSB / Fan Support Front 0(0)/Top 2(0)/Rear 1(1)/Side 2(2)/Buttom 2(2) / Bay 5.25''x0/3.5''x1/2.5''x2,1Y,990
+mATX,COLD,COOL CASE SC4 WHITE FAN*4,No Power / 3xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 5.25''x0/3.5''x3/2.5''x5,1Y,1190
+mATX,COLD,COOL CASE SC5 TG BLACK FAN*4,No Power / 3xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(1)/PSU Shroud 2(0) / Bay 5.25''x0/3.5''x2/2.5''x3,1Y,1390
+mATX,COOLER,MASTER ELITE 300 (E300-KN5N-S01),No Power / 2xUSB / Fan Support Front 0(0)/Top 3(3)/Rear 1(1)/PSU Shroud 0(0) / Bay 5.25''x0/3.5''/2.5''x2,2Y,1450
+mATX,ANTEC,CX200M RGB ELITE BLACK,No Power / 2xUSB / Fan Support PSU shroud 2(2)/Top 2(2)/Rear 1(1) / Bay 5.25x0/3.5x1/2.5x1,1Y,1450
+mATX,ANTEC,CX200M RGB ELITE WHITE,No Power / 2xUSB / Fan Support PSU shroud 2(2)/Top 2(2)/Rear 1(1) / Bay 5.25x0/3.5x1/2.5x1,1Y,1590
+mATX,COOLER,MASTER ELITE 301 BLACK (E301-KGNN-S00),No Power / 2xUSB / Fan Support Front 3(3)/Rear 1(0)/Top 2(0) / Bay 5.25''x0/3.5''x1/2.5''x1,2Y,1650
+mATX,COOLER,MASTER ELITE 481 WHITE,No Power / 3xUSB / Fan Support Front 0(0)/Top 3(0)/Rear 1(1)/Side Mount 2(2) / Bottom 3(0) / Bay 3.5''x1 / 2.5''x2,2Y,1690
+mATX,COOLER,MASTER ELITE 481 BLACK,No Power / 3xUSB / Fan Support Front 0(0)/Top 3(0)/Rear 1(1)/Side Mount 2(2) / Bottom 3(0) / Bay 3.5''x1 / 2.5''x2,2Y,1790
+mATX,COOLER,MASTER ELITE 302 BLACK (E302-KGNN-SAZ),No Power / 2xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(1)/Side 0(0)/PSU Shroud 0(0) / Bay 5.25x0/3.5x1/2.5x1,2Y,1800
+mATX,COOLER,MASTER ELITE 302 WHITE (E302-WGNN-SAZ),No Power / 2xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(1)/Side 0(0)/PSU Shroud 0(0) / Bay 5.25x0/3.5x1/2.5x1,2Y,1830
+mATX,ASUS,A21 WHITE,No Power / 2xUSB / Fan Support Front 3(0)/Top 3(0)/Rear 1(0)/PSU Shroud 0(0) / Bay 5.25x0/3.5x2/2.5x1,2Y,1990
+mATX,COOLER,MASTER TD300 MESH BLACK (TD300-KGNN-S00),No Power / 2xUSB / Fan Support Front 3(2)/Top 2(0)/Rear 1(1) / Bay 5.25''x0/3.5''x2/2.5''x2,2Y,2190
+mATX,DEEPCOOL,CH270 DIGITAL WHITE,No Power / 3xUSB / Fan Support Side 3(0)/Top 2(0)/Rear 0(0)/Bottom 1(0) / Bay 5.25x0/3.5x1/2.5x1,1Y,2990
+mATX,ASUS,PRIME AP202 ARGB BLACK,"No Power / 3xUSB / Fan Support Front 0(0)/Top 3(0)/Rear 1(0)/PSU Shroud 0(0) / Bay 3.5""/2.5""x2",2Y,3990
+Accessories,ARCTIC,4-PIN PWM FAN SPLITTER CABLE,Splitter Cable for Four Fans,6Y,190
+Accessories,ARCTIC,FAN HUB FOR 10 FANS (ACFAN00175A),FAN HUB 10 port,6Y,390
+ATX,CUBIC,RHINO BLACK/SILVER,No Power / 2xUSB / Fan Support Front 1(0)/Rear 1(1)/Side 1(0) / Bay 5.25''x1/3.5''x2/2.5''x2,1Y,540
+ATX,CUBIC,DEERX BLACK/RED,No Power / 2xUSB / Fan Support Rear 1(1)/Side 1(0) / Bay 5.25''x1/3.5''x2/2.5''x2,1Y,580
+ATX,CUBIC,DEERX BLACK/BLUE,No Power / 2xUSB / Fan Support Rear 1(1)/Side 1(0) / Bay 5.25''x1/3.5''x2/2.5''x2,1Y,580
+ATX,CUBIC,RHINO BLACK/RED,No Power / 2xUSB / Fan Support Front 1(0)/Rear 1(1)/Side 1(0) / Bay 5.25''x1/3.5''x2/2.5''x2,1Y,580
+ATX,CUBIC,LOUP BLACK/BLUE,No Power / 2xUSB / Fan Support Side 1(0)/Rear 1(1) / Bay 5.25''x1/3.5''x2/2.5''x2,1Y,580
+ATX,CUBIC,SPECTRUM BLACK/RED,No Power / 2xUSB / Fan Support Front 1(0)/Rear 1(1)/Side 1(0) / Bay 5.25''x1/3.5''x2/2.5''x0,1Y,580
+ATX,CUBIC,RHINO BLACK,No Power / 2xUSB / Fan Support Front 1(0)/Rear 1(1)/Side 1(0) / Bay 5.25''x1/3.5''x2/2.5''x2,1Y,590
+ATX,CUBIC,AJAX BLACK,No Power / 2xUSB / Fan Support Rear 1(1) /Side 1(0) / Bay 5.25''x1/3.5''x1/2.5''x2,1Y,590
+ATX,CUBIC,AJAX BLACK/BLUE,No Power / 2xUSB / Fan Support Rear 1(1)/Side 1(0) / Bay 5.25''x1/3.5''x1/2.5''x2,1Y,590
+ATX,CUBIC,PANTHER BLACK,No Power / 2xUSB / Fan Support Front 2(0)/Side 2(1)/Rear 1(0)/ PSU Cover 0(0) / PSU Cover 0(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,590
+ATX,CUBIC,HORIZON BLACK,No Power / 2xUSB / Fan Support Front 2(0)/Side 2(1)/Rear 1(0)/ PSU Cover 0(0) / PSU Cover 0(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,590
+ATX,CUBIC,CRYSTALMESH BLACK,No Power / 2xUSB / Fan Support Front 2(0)/Side 2(1)/Rear 1(0)/ PSU Cover 0(0) / PSU Cover 0(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,590
+ATX,CUBIC,SHARKFIN BLACK,No Power / 2xUSB / Fan Support Front 2(2)/Side 2(0)/Rear 1(0)/ PSU Cover 0(0) / PSU Cover 0(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,620
+ATX,CUBIC,GOLIATH BLACK,No Power / 2xUSB / Fan Support Front 2(2)/Side 2(0)/Rear 1(0)/ PSU Cover 0(0) / PSU Cover 0(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,650
+ATX,CUBIC,WINGMAN RGB BLACK,No Power / 2xUSB / Fan Support Front 0(0)/Side 2(1)/Rear 1(1)/PSU Shroud 0(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,850
+ATX,COLD,COOL CASE H9 BLACK,No Power / 3xUSB / Fan Support Front 0(0)/Top 2(2)/Rear 1(1)/ PSU Cover 2(0) / Side 0(0) / Bay 5.25''x0/3.5''x1/2.5''x1,1Y,890
+ATX,COLD,COOL CASE H9 WHITE,No Power / 3xUSB / Fan Support Front 0(0)/Top 2(2)/Rear 1(1)/ PSU Cover 2(0) / Side 0(0) / Bay 5.25''x0/3.5''x1/2.5''x1,1Y,890
+ATX,CUBIC,INDEED RGB BLACK,No Power / 3xUSB / Fan Support Front 3(0)/Top 0(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 5.25''x0/3.5''x1/2.5''x2,1Y,890
+ATX,CUBIC,FLARE RGB BLACK,No Power / 3xUSB / Fan Support Front 3(0)/Top 0(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 5.25''x0/3.5''x1/2.5''x2,1Y,920
+mATX,COLD,COOL CASE M9 BLACK,No Power / 3xUSB / Fan Support Front 0(0)/Top 2(0)/Rear 1(1)/ Bottom 2(0) / Side 2(2) / Bay 5.25''x0/3.5''x2/2.5''x1,1Y,950
+mATX,COLD,COOL CASE M9 WHITE,No Power / 3xUSB / Fan Support Front 0(0)/Top 2(0)/Rear 1(1)/ Bottom 2(0) / Side 2(2) / Bay 5.25''x0/3.5''x2/2.5''x1,1Y,950
+ATX,AEROCOOL,PLAYER G-V1 FRGB BLACK,No Power / 3xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 5.25''x0/3.5''x3/2.5''x5,1Y,1020
+ATX,ANTEC,VX310 ARGB BLACK,No Power / 2xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(1)/ PSU Shroud 2(0) / Bay 5.25''x0/3.5''x1/2.5''x3,1Y,1190
+ATX,ANTEC,AX20 ELITE BLACK,No Power / 3xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(0)/PSU Shroud 2(0) / Bay 5.25''x0/3.5''x2/2.5''x2,1Y,1190
+ATX,COLD,COOL CASE CE4 BLACK FAN*3,No Power / 3xUSB / Fan Support Front 3(3)/Top 2(0)/Rear 1(0) / Bay 5.25''x0/3.5''x1/2.5''x1,1Y,1290
+mATX,COOLER,MASTER ELITE 301 WHITE (E301-WGNN-S00),No Power / 2xUSB / Fan Support Front 3(3)/Rear 1(0)/Top 2(0) / Bay 5.25''x0/3.5''x1/2.5''x1,2Y,1650
+ATX,ANTEC,NX420,No Power / 3xUSB / Fan Support Front 3(0)/Top 2(0)/Rear 1(1)/Side 0(0) / Bottom 0(0) / Bay 3.5''x1 / 2.5''x4,1Y,1590
+ATX,ANTEC,CX300 RGB ELITE BLACK,No Power / 3xUSB / Fan Support PSU Shroud 2(0)/Top 3(0)/Rear 1(1)/Side 3(3) / Bottom 1(0) / Bay 3.5''x1 / 2.5''x2,1Y,1590
+ATX,ANTEC,CX300 RGB ELITE WHITE,No Power / 3xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(1)/Bottom 1(0) / PSU Shroud 2(0) / Bay 3.5 /2.5 x2,1Y,1650
+ATX,COOLER,MASTER ELITE 690 WHITE,No Power / 3xUSB / Fan Support Front 0(0)/Top 3(0)/Rear 1(1)/Side 2(2) / Bottom 3(0) / Bay 3.5''x1 / 2.5''x1,2Y,1650
+ATX,COOLER,MASTER QUBE 540 MOONSTONE,No Power / 3xUSB / Fan Support Front 3(0)/Top 3(0)/Rear 1(1)/ Left side 0(0) / Bay 3.5''x1 / 2.5''x2,2Y,1950
+ATX,COOLER,MASTER QUBE 500 BLACK,No Power / 3xUSB / Fan Support Front 1(0)/Top 2(0)/Rear 1(1)/ Left side 2(0) / Bay 3.5''x4 / 2.5''x3,2Y,1950
+ATX,COOLER,MASTER QUBE 500 WHITE,No Power / 3xUSB / Fan Support Front 1(0)/Top 2(0)/Rear 1(1)/ Left side 2(0) / Bay 3.5''x4 / 2.5''x3,2Y,1950
+ATX,COLD,COOL CASE C6 BLACK FAN*7,No Power / 3xUSB / Fan Support Front 0(0)/Top 3(3)/Rear 1(1)/ Bottom 0(0) / MB Plate 3(3) / Bay 5.25''x0/3.5''x1/2.5''x1,1Y,2090
+ATX,COLD,COOL CASE C6 WHITE FAN*7,No Power / 3xUSB / Fan Support Front 0(0)/Top 3(3)/Rear 1(1)/ Bottom 0(0) / MB Plate 0(3) / Bay 5.25''x0/3.5''x1/2.5''x1,1Y,2090
+ATX,COOLER,MASTER ELITE 681 WHITE (E681-WHNN-S00),No Power / 3xUSB / Fan Support Front 0(0)/Top 3(0)/Rear 1(1)/Side 3(3) / Bottom 3(0) / Bay 3.5''x1 / 2.5''x2,2Y,2090
+ATX,CORSAIR,3500X TEMPERED GLASS BLACK,No Power / 3xUSB / Fan Support Bottom 3(0)/Top 3(0)/Rear 1(0)/side 3(0) / Bay 5.25''x0/3.5''x2/2.5''x2,2Y,2790
+ATX,COLD,COOL CASE C8 WHITE FAN*6,No Power / 3xUSB / Fan Support Front 0(0)/Top 3(0)/Rear 1(1)/ PSU Cover 3(3) / MB Side 2(2) / Bay 5.25''x0/3.5''x1/2.5''x1,1Y,2990
+ATX,ANTEC,C3 ARGB WHITE,No Power / 3xUSB / Fan Support Front 0(0)/Top 3(0)/Rear 1(1)/Side 3(3) / Bottom 1(0) / Bay 3.5''x1 / 2.5''x3,2Y,3180
+ATX,CORSAIR,3500X RS-R ARGB TEMPERED GLASS BLACK (CC-9011322-WW),No Power / 3xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(0)/PSU Shroud 2(0) / Bottom 3(0) / Bay 3.5''x2 / 2.5''x2,2Y,3290
+ATX,CORSAIR,3500X RS-R ARGB TEMPERED GLASS WHITE (CC-9011323-WW),No Power / 3xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(0)/PSU Shroud 2(0) / Bottom 3(0) / Bay 3.5''x2 / 2.5''x2,2Y,3290
+ATX,ANTEC,C5 ARGB BLACK,No Power / 2xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(1)/Bottom 3(3) / Bay 5.25''x0/3.5''x1/2.5''x2,2Y,3990
+ATX,ANTEC,C5 ARGB WHITE,No Power / 2xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(1)/Bottom 3(3) / Bay 5.25''x0/3.5''x1/2.5''x2,2Y,3990
+ATX,CORSAIR,ICUE LINK 3500X RGB TEMPERED GLASS WHITE,No Power / 3xUSB / Fan Support Bottom 3(0)/Top 3(0)/Rear 1(0)/side 3(0) / Bay 5.25''x0/3.5''x2/2.5''x2,2Y,4750
+ATX,ASUS,PROART PA401 WOOD METAL PWM BLACK,No Power / 3xUSB / Fan Support Front 2(2)/Top 2(0)/Rear 1(1)/Side 0(0) / Bottom 0(0) / Bay 3.5''x2 / 2.5''x2,2Y,3690
+ATX,ASUS,PROART PA401 WOOD TG PWM BLACK,No Power / 3xUSB / Fan Support Front 2(2)/Top 2(0)/Rear 1(1)/Side 0(0) / Bottom 0(0) / Bay 3.5''x2 / 2.5''x2,2Y,3990
+ATX,ASUS,TUF GAMING GT302 ARGB BLACK,No Power / 3xUSB / Fan Support Front 3(3)/Top 3(0)/Rear 1(1)/PSU Shroud 0(0) / Bay 3.5''x2/2.5''x2,2Y,3990
+ATX,COOLER,MASTER MASTERFRAME 500 MESH SILVER,No Power / 3xUSB / Fan Support Front 3(2)/Top 3(0)/Rear 1(1)/ Bottom 1(0) / Bay 3.5''/2.5''x2,2Y,4550
+ATX,CORSAIR,3500X LX-R RGB TEMPERED GLASS BLACK (CC-9011324-WW),No Power / 3xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(0)/PSU Shroud 2(0) / Bottom 3(0) / Bay 3.5''x2 / 2.5''x2,2Y,5390
+ATX,CORSAIR,3500X LX-R RGB TEMPERED GLASS WHITE (CC-9011325-WW),No Power / 3xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(0)/PSU Shroud 2(0) / Bottom 3(0) / Bay 3.5''x2 / 2.5''x2,2Y,5390
+ATX,CORSAIR,FRAME 4500X RS-R ARGB PANORAMIC GLASS WHITE (CC-9011315-WW),No Power / 3xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(0)/PSU Shroud 2(0) / Bottom 3(0) / Bay 3.5''x1 / 2.5''x2,2Y,5590
+ATX,ASUS,TUF GAMING GT502 TG BLACK,No Power / 3xUSB / Fan Support Front 3(0)/Top 2(0)/Rear 1(0) / Bay 5.25x0/3.5x0/2.5x4,2Y,6190
+ATX,ASUS,TUF GAMING GT502 TG WHITE,No Power / 3xUSB / Fan Support Front 3(0)/Top 2(0)/Rear 1(0) / Bay 5.25x0/3.5x0/2.5x4,2Y,6190
+ATX,CORSAIR,AIR 5400 RS-R ARGB TEMPERED GLASS WHITE (CC-9011319-WW),No Power / 3xUSB / Fan Support Front 3(0)/Top 3(0)/Rear 1(0)/Bottom 3(3) / Side 0(0) / Bay 3.5''x1 / 2.5''x2,2Y,6850
+ATX,COOLER,MASTER MASTERFRAME 600 SILVER (MF600-SGNN-S00),No Power / 3xUSB / Fan Support Front 3(3)/Top 3(0)/Rear 1(1)/Side 3(0) / Bottom 0(0) / Bay 3.5''x2 / 2.5''x3,2Y,6990
+ATX,COOLER,MASTER MASTERFRAME 600 BLACK (MF600-KGNN-S00),No Power / 3xUSB / Fan Support Front 3(3)/Top 3(0)/Rear 1(1)/Side 3(0) / Bottom 0(0) / Bay 3.5''x2 / 2.5''x3,2Y,6990
+ATX,CORSAIR,FRAME 4500X LX-R RGB LINK PANORAMIC GLASS BLACK,No Power / 3xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(0)/PSU Shroud 2(0) / Bottom 3(0) / Bay 3.5''x1 / 2.5''x2,2Y,7650
+ATX,CORSAIR,FRAME 4500X LX-R RGB LINK PANORAMIC GLASS WHITE,No Power / 3xUSB / Fan Support Side 3(3)/Top 3(0)/Rear 1(0)/PSU Shroud 2(0) / Bottom 3(0) / Bay 3.5''x1 / 2.5''x2,2Y,7550
+ATX,CORSAIR,5000T MID TOWER BLACK (CC-9011300-WW),No Power / 5xUSB / Fan Support Front 3(0)/Side 3(0)/Rear 1(0)/Top 3(0) / Bay 5.25''x0/3.5''x2/2.5''x3,2Y,8100
+ATX,CORSAIR,5000T MID TOWER WHITE (CC-9011301-WW),No Power / 5xUSB / Fan Support Front 3(0)/Side 3(0)/Rear 1(0)/Top 3(0) / Bay 5.25''x0/3.5''x2/2.5''x3,2Y,8100
+ATX,COOLER,MASTER MASTERFRAME 360 PANORAMA,No Power / 3xUSB / Fan Support Front 0(0)/Top 6(0)/Rear 0(0)/ Bottom 6(0) / Bay 3.5''x1 / 2.5''x2,2Y,7290
+ATX,COOLER,MASTER MASTERFRAME 360 STAGE MIRROR,No Power / 3xUSB / Fan Support Front 0(0)/Top 6(0)/Rear 0(0)/ Bottom 6(0) / Bay 3.5''x1 / 2.5''x2,2Y,7990
+ATX,COOLER,MASTER MASTERFRAME 360 STAGE LCD,No Power / 3xUSB / Fan Support Front 0(0)/Top 6(0)/Rear 0(0)/ Bottom 6(0) / Bay 3.5''x1 / 2.5''x2,2Y,9900
+ATX,CORSAIR,AIR 5400 LX-R LINK TEMPERED GLASS BLACK (CC-9011320-WW),No Power / 3xUSB / Fan Support Front 3(0)/Top 3(0)/Rear 1(0)/Bottom 3(3) / Side 0(0) / Bay 3.5''x1 / 2.5''x2,2Y,9200
+ATX,CORSAIR,AIR 5400 LX-R LINK TEMPERED GLASS WHITE (CC-9011321-WW),No Power / 3xUSB / Fan Support Front 3(0)/Top 3(0)/Rear 1(0)/Bottom 3(3) / Side 0(0) / Bay 3.5''x1 / 2.5''x2,2Y,9200
+ATX,CORSAIR,ICUE LINK 5000T LX RGB MID TOWER BLACK (CC-9011298-WW),No Power / 5xUSB / Fan Support Front 3(3)/Side 3(0)/Rear 1(0)/Top 3(0) / Bay 5.25''x0/3.5''x2/2.5''x3,2Y,11790
+ATX,CORSAIR,ICUE LINK 5000T LX RGB MID TOWER WHITE (CC-9011299-WW),No Power / 5xUSB / Fan Support Front 3(3)/Side 3(0)/Rear 1(0)/Top 3(0) / Bay 5.25''x0/3.5''x2/2.5''x3,2Y,11790
+E-ATX,CORSAIR,FRAME 4000D AIRFLOW WHITE (CC-9011291-WW),No Power / 3xUSB / Fan Support Front 3(0)/Top 3(0)/Rear 1(0)/Side 3(0) / Bottom 2(0) / Bay 3.5''x2 / 2.5''x4,2Y,2990
+E-ATX,CORSAIR,FRAME 4000D AIRFLOW RS BLACK (CC-9011312-WW),No Power / 3xUSB / Fan Support Front 3(3)/Top 3(0)/Rear 1(0)/Side 3(0) / Bottom 2(0) / Bay 3.5''x2 / 2.5''x4,2Y,3150
+E-ATX,CORSAIR,FRAME 4000D AIRFLOW RS WHITE (CC-9011313-WW),No Power / 3xUSB / Fan Support Front 3(3)/Top 3(0)/Rear 1(0)/Side 3(0) / Bottom 2(0) / Bay 3.5''x2 / 2.5''x4,2Y,3150
+E-ATX,CORSAIR,FRAME 4000D AIRFLOW RS ARGB WHITE (CC-9011297-WW),No Power / 3xUSB / Fan Support Front 3(3)/Top 3(0)/Rear 1(0)/Side 3(0) / Bottom 2(0) / Bay 3.5''x2 / 2.5''x4,2Y,3550
+E-ATX,G.SKILL,MD1 WHITE,No Power / 3xUSB / Fan Support Front 3(3)/Top 3(0)/Rear 1(0)/PSU Shroud 0(0) / Bay 3.5''x2/2.5''x2,2Y,3500
+E-ATX,DEEPCOOL,CH780 WHITE,No Power / 5xUSB / Fan Support Front 0(0)/Top 3(0)/Rear 0(0)/Side 3(3) / Bottom 3(0) / Bay 3.5''x2 / 2.5''x2,1Y,4950
+E-ATX,ASUS,PROART PA602 WOOD EDITION,No Power / 5xUSB / Fan Support Front 2(2)/Top 3(0)/Rear 1(1)/Side 0(0) / Bottom 0(0) / Bay 3.5'' / 2.5'' x8,2Y,12500

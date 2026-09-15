@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="th" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spec X - Data Science PC Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* ตัวแปรสีสไตล์ X ผสมมิติการ์ดให้ชัดเจนขึ้น */
+        :root {
+            --x-blue: #0f1419;
+            --x-blue-hover: #353535;
+            --x-bg-body: #f4f6f8; 
+            --x-card-bg: #ffffff; 
+            --x-border: #cfd9de; 
+            --x-text-main: #0f1419;
+            --x-text-muted: #536471;
+            --x-hover-bg: #f8f9fa;
+        }
+
+        [data-bs-theme="dark"] {
+            --x-bg-body: #000000; 
+            --x-card-bg: #16181c; 
+            --x-border: #38444d;
+            --x-text-main: #e7e9ea;
+            --x-text-muted: #8b98a5;
+            --x-hover-bg: #1c2732;
+        }
+
+        body { 
+            background-color: var(--x-bg-body); 
+            color: var(--x-text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Header สไตล์ X (ขอบล่างบางๆ พื้นหลังโปร่งแสงนิดๆ) */
+        .app-header { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px); 
+            color: var(--x-text-main); 
+            border-bottom: 1px solid var(--x-border); 
+            position: sticky; top: 0; z-index: 1030; /* 🌟 ปรับเป็น 1030 เพื่อไม่ให้กล่องซ้อนทับ */
+            transition: background-color 0.3s ease;
+        }
+        [data-bs-theme="dark"] .app-header {
+            background: rgba(0, 0, 0, 0.85);
+        }
+        .app-subtitle { font-size: 0.85rem; color: var(--x-text-muted); }
+
+        /* Dashboard Card ปรับให้มีมิติ มีเงาบางๆ */
+        .dashboard-card { 
+            border: 1px solid var(--x-border); 
+            border-radius: 16px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04); 
+            background-color: var(--x-card-bg); 
+            margin-bottom: 1.25rem;
+            overflow: hidden; 
+            transition: all 0.2s ease;
+        }
+        .dashboard-card:hover { 
+            background-color: var(--x-card-bg); /* ให้พื้นหลังการ์ดคงเดิมตอน Hover ป้องกันการกลืนกับไอเทมย่อย */
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08); 
+        }
+        .card-title-bar { background-color: transparent; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--x-border); }
+        
+        .metric-title { font-size: 0.85rem; font-weight: 700; color: var(--x-text-muted); margin-bottom: 6px; letter-spacing: 0.5px; }
+        .progress { background-color: var(--x-border); border-radius: 9999px; }
+        
+        .score-box { background: transparent; border: 1px solid var(--x-border); border-radius: 16px; padding: 15px 10px; text-align: center; }
+        .score-value { font-size: 1.75rem; font-weight: 800; color: #1d9bf0; line-height: 1; }
+        .score-label { font-size: 0.7rem; font-weight: 700; color: var(--x-text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .cursor-pointer { cursor: pointer; }
+        
+        /* 🌟 New Modern Spec List Styling */
+        .spec-row {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background-color: transparent;
+            transition: background-color 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .spec-row:hover {
+            background-color: var(--x-hover-bg);
+        }
+        .spec-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background-color: rgba(29, 155, 240, 0.08);
+            color: #1d9bf0;
+            margin-right: 14px;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        [data-bs-theme="dark"] .spec-icon {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--x-text-main);
+        }
+        .spec-details { flex-grow: 1; }
+        .spec-label-text {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--x-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .spec-value-text {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--x-text-main);
+            line-height: 1.3;
+        }
+        .spec-sub-text {
+            font-size: 0.75rem;
+            color: var(--x-text-muted);
+            margin-top: 2px;
+        }
+
+        /* Expert Modal Custom Styling มีกรอบ มีเงา */
+        .component-card { 
+            background-color: var(--x-card-bg); 
+            border: 1px solid var(--x-border); 
+            border-radius: 16px; 
+            transition: transform 0.2s;     
+        }
+        .comp-header { font-size: 0.95rem; letter-spacing: 0.5px; background: transparent; padding: 12px 15px; border-radius: 16px 16px 0 0; border-bottom: 1px solid var(--x-border); margin: -1rem -1rem 1rem -1rem;}
+        .expert-label { font-size: 0.7rem; color: var(--x-text-muted); text-transform: uppercase; display: block; margin-bottom: 2px; font-weight: 600;}
+        .expert-val { font-size: 0.85rem; color: var(--x-text-main); font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .expert-val-wrap { font-size: 0.85rem; color: var(--x-text-main); font-weight: 500; }
+        .grid-item { margin-bottom: 12px; }
+
+        /* Custom Style สำหรับปุ่ม ทรงแคปซูลแบบ X */
+        .btn-primary { background-color: #080808; border: none; border-radius: 9999px; font-weight: 700; color: white; }
+        .btn-primary:hover { background-color: #181818; color: white;}
+
+        .btn-expert {
+            background: var(--x-text-main); 
+            color: var(--x-card-bg);
+            border: 1px solid transparent;
+            border-radius: 9999px; 
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px; 
+        }
+        .btn-expert:hover { opacity: 0.9; color: var(--x-card-bg); }
+
+        .btn-sim {
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            padding: 0.4rem 1.2rem;
+            font-weight: 700;
+            border-color: var(--x-border);
+            color: #1d9bf0;
+            background-color: transparent;
+        }
+        .btn-sim:hover { background-color: rgba(29, 155, 240, 0.1); color: #1d9bf0; border-color: var(--x-border); }
+
+        
+        [data-bs-theme="dark"] .text-dark { color: var(--x-text-main) !important; }
+        [data-bs-theme="dark"] .text-muted { color: var(--x-text-muted) !important; }
+        [data-bs-theme="dark"] .border-bottom, [data-bs-theme="dark"] .border-end, [data-bs-theme="dark"] .border-top { border-color: var(--x-border) !important; }
+        [data-bs-theme="dark"] .card { background-color: var(--x-card-bg); border-color: var(--x-border); }
+        [data-bs-theme="dark"] .form-control, [data-bs-theme="dark"] .input-group-text { background-color: transparent; border-color: var(--x-border); color: var(--x-text-main); }
+        [data-bs-theme="dark"] .modal-content { background-color: var(--x-card-bg); border: 1px solid var(--x-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        [data-bs-theme="dark"] .modal-header, [data-bs-theme="dark"] .modal-footer { border-color: var(--x-border); background-color: var(--x-card-bg) !important; color: var(--x-text-main) !important; }
+        [data-bs-theme="dark"] .modal-body { background-color: var(--x-bg-body) !important; }
+        [data-bs-theme="dark"] .list-group-item { background-color: transparent; border-color: var(--x-border); color: var(--x-text-main); }
+        [data-bs-theme="dark"] .accordion-item { background-color: transparent; border-color: var(--x-border); }
+        [data-bs-theme="dark"] .accordion-button { background-color: transparent; color: var(--x-text-main); }
+        [data-bs-theme="dark"] .accordion-button:not(.collapsed) { background-color: rgba(29, 155, 240, 0.1); color: #1d9bf0; }
+        [data-bs-theme="dark"] .nav-pills .nav-link { color: var(--x-text-muted); }
+        [data-bs-theme="dark"] .nav-pills .nav-link.active { background-color: #1d9bf0; color: #fff; }
+        [data-bs-theme="dark"] .alert-info { background-color: rgba(29, 155, 240, 0.1); color: #1d9bf0; border-color: var(--x-border); }
+        [data-bs-theme="dark"] .bg-light { background-color: transparent !important; }
+        [data-bs-theme="dark"] .bg-white { background-color: var(--x-card-bg) !important; }
+    </style>
+</head>
+<body>
+
+<div class="app-header py-3">
+    <div class="container px-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h3 class="fw-bold mb-0" style="letter-spacing: -0.5px;"><i class="bi bi-cpu text-primary"></i> Spec X</h3>
+            <div class="app-subtitle">Machine Learning Model for PC Build Optimization</div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-2">
+            <button id="theme-toggle" class="btn rounded-pill" style="border: 1px solid var(--x-border); color: var(--x-text-main); background: transparent;">
+                <i class="bi bi-moon-stars-fill"></i>
+            </button>
+            <a href="{% url 'custom_builder' %}" class="btn btn-primary px-4 py-2 fw-bold" style="border-radius: 9999px;">
+                <i class="bi bi-tools me-1"></i> Build your own computer
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4 mb-5 px-4">
+    <div id="user-budget" data-budget="{{ form.budget.value|default:'0' }}" style="display:none;"></div>
+
+    <div class="row">
+        
+        <div class="col-lg-4 mb-4">
+            <div class="dashboard-card sticky-top" style="top: 80px;">
+                <div class="card-title-bar fw-bold text-dark"><i class="bi bi-sliders"></i> Model Parameters</div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label metric-title">TARGET BUDGET</label>
+                            <div class="input-group">
+                                <span class="input-group-text fw-bold">฿</span>
+                                {{ form.budget }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label metric-title">USAGE CLASSIFICATION</label>
+                            <div class="card p-3 rounded-4 shadow-sm">
+                                {% for radio in form.usage_type %}
+                                <div class="form-check mb-2">
+                                    {{ radio.tag }}
+                                    <label class="form-check-label text-dark fw-semibold" style="font-size: 0.9rem;" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div id="brand-preference-box" style="display: none;">
+                            <div class="mb-3">
+                                <label class="form-label metric-title">CPU BRAND PREFERENCE</label>
+                                <div class="card p-2 rounded-4 shadow-sm">
+                                    {% for radio in form.cpu_brand %}
+                                    <div class="form-check mb-1">
+                                        {{ radio.tag }}
+                                        <label class="form-check-label text-dark" style="font-size: 0.85rem;" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label metric-title">GPU BRAND PREFERENCE</label>
+                                <div class="card p-2 rounded-4 shadow-sm">
+                                    {% for radio in form.gpu_brand %}
+                                    <div class="form-check mb-1">
+                                        {{ radio.tag }}
+                                        <label class="form-check-label text-dark" style="font-size: 0.85rem;" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="low-budget-notice" class="alert alert-info py-2 rounded-4 shadow-sm" style="font-size: 0.8rem; display: none;">
+                            <i class="bi bi-info-circle-fill"></i> ระบบข้ามการล็อคค่าย CPU/GPU เนื่องจากงบประมาณไม่ถึงเกณฑ์ขั้นต่ำ (18,000) จะวิเคราะห์สเปคที่คุ้มค่าที่สุดให้โดยอัตโนมัติ
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm">
+                            <i class="bi bi-play-fill"></i> Run Prediction
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            {% if builds %}
+            <div class="d-flex justify-content-between align-items-center mb-3 px-2">
+                <h5 class="fw-bold text-dark mb-0"><i class="bi bi-bar-chart-fill text-primary" style="color:#1d9bf0 !important;"></i> Predicted Configurations</h5>
+                <span class="badge bg-secondary rounded-pill fs-6 shadow-sm">พบ {{ builds|length }} สเปค</span>
+            </div>
+
+            <div id="ai-insight-warning" style="display: none;">
+                <div class="alert shadow-sm rounded-4 mb-4" style="background-color: #fffbeb; border: 1px solid #fde68a;" role="alert">
+                    <div class="d-flex align-items-start">
+                        <div class="me-3 mt-1">
+                            <i class="bi bi-lightbulb-fill fs-3" style="color: #f59e0b;"></i>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading fw-bold mb-1" style="color: #b45309;">AI Insight: ทำไมสายกราฟิกถึงได้สเปค Onboard?</h6>
+                            <p class="mb-0" style="font-size: 0.85rem; color: #78350f; line-height: 1.5;">
+                                เนื่องจากงบประมาณที่ระบุไม่เพียงพอสำหรับการ์ดจอแยกสายทำงาน (Workstation) ที่ได้มาตรฐานในปัจจุบัน AI จึงจัดสรรงบไปที่ <strong>CPU ประสิทธิภาพสูงพร้อมกราฟิกในตัว</strong> เพื่อให้คุณใช้ทำงานเรนเดอร์พื้นฐานได้อย่างเสถียรที่สุด<br>
+                                <span style="font-size: 0.8rem; color: #92400e; margin-top: 4px; display: inline-block;">
+                                    * หากต้องการให้ระบบแนะนำสเปคที่มีการ์ดจอแยกสายกราฟิก แนะนำให้ปรับงบประมาณเป็น <strong>15,000 บาทขึ้นไป</strong>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for build in builds %}
+            <div class="dashboard-card">
+                <div class="card-title-bar d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="score-label d-block">CLASSIFICATION RANK</span>
+                        <h4 class="fw-bolder mb-0 mt-1 {% if 'Pro' in build.rank %}text-warning{% elif 'Great' in build.rank %}text-success{% else %}text-primary{% endif %}" {% if 'Pro' in build.rank %}style="color: #f59e0b !important;"{% elif 'Basic' in build.rank or 'Fair' in build.rank %}style="color: #1d9bf0 !important;"{% endif %}>
+                            <i class="bi bi-robot"></i> {{ build.rank }}
+                        </h4>
+                    </div>
+                    <div class="text-end">
+                        <span class="score-label d-block">CURRENT ESTIMATED COST</span>
+                        <h4 class="fw-bolder text-danger mb-0 mt-1" id="display-price-{{ forloop.counter }}">฿{{ build.total_price|floatformat:"0" }}</h4>
+                        
+                        <div id="total-price-{{ forloop.counter }}" data-base-price="{{ build.total_price|floatformat:'0' }}" style="display:none;"></div>
+                        <div id="ai-case-price-{{ forloop.counter }}" data-price="{{ build.case.price|default:0 }}" style="display:none;"></div>
+                        <div id="ai-cooler-price-{{ forloop.counter }}" data-price="{{ build.gears.cooler.price|default:0 }}" style="display:none;"></div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 border-end pe-md-4">
+                            <h6 class="metric-title mb-3"><i class="bi bi-hdd-stack"></i> CORE ARCHITECTURE</h6>
+                            
+                            <div class="d-flex flex-column pe-2">
+                                <div class="spec-row">
+                                    <div class="spec-icon"><i class="bi bi-cpu-fill"></i></div>
+                                    <div class="spec-details">
+                                        <div class="spec-label-text">Processor</div>
+                                        <div class="spec-value-text">{{ build.cpu.name_cpu }}</div>
+                                        <div class="spec-sub-text">Socket: {{ build.cpu.socket_cpu }}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="spec-row">
+                                    <div class="spec-icon text-success" style="background-color: rgba(25, 135, 84, 0.08);"><i class="bi bi-gpu-card"></i></div>
+                                    <div class="spec-details">
+                                        <div class="spec-label-text">Graphics</div>
+                                        <div class="spec-value-text d-flex align-items-center flex-wrap gap-1">
+                                            {{ build.gpu.name_gpu }}
+                                            {% if build.gpu.name_gpu == 'Onboard Graphics' %}
+                                                <span class="badge bg-secondary rounded-pill shadow-sm" style="font-size: 0.65rem;">Onboard</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="spec-row">
+                                    <div class="spec-icon text-warning" style="background-color: rgba(255, 193, 7, 0.1);"><i class="bi bi-motherboard-fill"></i></div>
+                                    <div class="spec-details">
+                                        <div class="spec-label-text">Mainboard</div>
+                                        <div class="spec-value-text">{{ build.mb.name_mainboards }}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="spec-row">
+                                    <div class="spec-icon text-danger" style="background-color: rgba(220, 53, 69, 0.08);"><i class="bi bi-memory"></i></div>
+                                    <div class="spec-details">
+                                        <div class="spec-label-text">Memory (RAM)</div>
+                                        <div class="spec-value-text">{{ build.ram.name__ram }} <span class="text-primary ms-1">x{{ build.ram_qty }}</span></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="spec-row">
+                                    <div class="spec-icon text-info" style="background-color: rgba(13, 202, 240, 0.1);"><i class="bi bi-device-hdd-fill"></i></div>
+                                    <div class="spec-details">
+                                        <div class="spec-label-text">Storage</div>
+                                        <div class="spec-value-text">{{ build.ssd_name|safe }}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="spec-row">
+                                    <div class="spec-icon text-secondary" style="background-color: rgba(108, 117, 125, 0.08);"><i class="bi bi-plug-fill"></i></div>
+                                    <div class="spec-details">
+                                        <div class="spec-label-text">Power Supply</div>
+                                        <div class="spec-value-text">{{ build.psu.name_powersupplies }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 ps-md-4 mt-4 mt-md-0">
+                            <h6 class="metric-title mb-4"><i class="bi bi-speedometer2"></i> PERFORMANCE ANALYSIS</h6>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between fw-bold mb-1" style="font-size: 0.75rem; color: var(--x-text-muted);">
+                                    <span>GAMING (GPU)</span><span>{{ build.stats.gaming }}%</span>
+                                </div>
+                                <div class="progress shadow-sm" style="height: 6px;"><div class="progress-bar bg-danger rounded-pill" style="width: {{ build.stats.gaming }}%;"></div></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between fw-bold mb-1" style="font-size: 0.75rem; color: var(--x-text-muted);">
+                                    <span>WORK (CPU)</span><span>{{ build.stats.work }}%</span>
+                                </div>
+                                <div class="progress shadow-sm" style="height: 6px;"><div class="progress-bar bg-info rounded-pill" style="width: {{ build.stats.work }}%;"></div></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between fw-bold mb-1" style="font-size: 0.75rem; color: var(--x-text-muted);">
+                                    <span>SYSTEM BALANCE</span><span>{{ build.stats.balance }}%</span>
+                                </div>
+                                <div class="progress shadow-sm" style="height: 6px;"><div class="progress-bar bg-success rounded-pill" style="width: {{ build.stats.balance }}%;"></div></div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between fw-bold mb-1" style="font-size: 0.75rem; color: var(--x-text-muted);">
+                                    <span>VALUE (ความคุ้มค่า)</span><span>{{ build.stats.value }}%</span>
+                                </div>
+                                <div class="progress shadow-sm" style="height: 6px;"><div class="progress-bar bg-warning rounded-pill" style="width: {{ build.stats.value }}%;"></div></div>
+                            </div>
+
+                            <div class="row g-2 mt-2">
+                                <div class="col-6">
+                                    <div class="score-box shadow-sm">
+                                        <div class="score-label mb-1">PASSMARK SCORE</div>
+                                        <div class="score-value">{{ build.score|floatformat:"0" }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="score-box shadow-sm">
+                                        <div class="score-label mb-1">GLOBAL SCALE</div>
+                                        <div class="score-value text-success fs-5 mt-2">{{ build.scale|safe }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-transparent border-top p-4">
+                    <h6 class="metric-title mb-1 text-primary" style="color:#1d9bf0 !important;"><i class="bi bi-calculator"></i> CUSTOMIZATION & SIMULATION</h6>
+                    <p class="text-muted" style="font-size: 0.75rem; margin-bottom: 10px;">* จำเป็นต้องเลือก Case (และ Cooler) เพิ่มเติมในป๊อปอัพ เพื่อดูการเปลี่ยนแปลงราคาสุทธิ</p>
+                    
+                    <div id="budget-warning-{{ forloop.counter }}" class="alert alert-danger py-2 px-3 mb-2 fw-bold rounded-4 shadow-sm" style="font-size: 0.85rem; display: none;"></div>
+                    
+                    <div id="added-items-{{ forloop.counter }}"></div>
+                    
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <button type="button" class="btn btn-outline-primary btn-sim shadow-sm" data-bs-toggle="modal" data-bs-target="#gearModal" onclick="openModal('{{ forloop.counter }}')">
+                            <i class="bi bi-plus-circle"></i> จำลองเพิ่มอุปกรณ์เสริม
+                        </button>
+                        <button type="button" class="btn-expert shadow-sm" data-bs-toggle="modal" data-bs-target="#expertModal-{{ forloop.counter }}">
+                            <i class="bi bi-cpu" style="font-size: 1.1em;"></i> Expert Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="expertModal-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content border-0 shadow-lg rounded-4">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold">
+                                <i class="bi bi-list-columns-reverse text-info me-2"></i> Expert View (Build #{{ forloop.counter }})
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            
+                            <div class="component-card p-3 mb-3">
+                                <h6 class="comp-header text-primary fw-bold" style="color:#1d9bf0 !important;"><i class="bi bi-cpu-fill"></i> Processor (CPU)</h6>
+                                <div class="row">
+                                    <div class="col-12 grid-item"><span class="expert-label">Model Name (name_cpu)</span><span class="expert-val-wrap">{{ build.cpu.name_cpu }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Brand (brand_cpu)</span><span class="expert-val">{{ build.cpu.brand_cpu|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Socket (socket_cpu)</span><span class="expert-val">{{ build.cpu.socket_cpu|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-12 grid-item"><span class="expert-label">Price (price_cpu)</span><span class="expert-val text-danger">฿{{ build.cpu.price_cpu|floatformat:"0"|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-4 grid-item"><span class="expert-label">Passmark (benchmark_cpu)</span><span class="expert-val text-success">{{ build.cpu.benchmark_cpu|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-4 grid-item"><span class="expert-label">Global Rank (rank_cpu)</span><span class="expert-val">#{{ build.cpu.rank_cpu|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-4 grid-item"><span class="expert-label">Value (value_cpu)</span><span class="expert-val">{{ build.cpu.value_cpu|default:"-" }} pts/฿</span></div>
+                                </div>
+                            </div>
+
+                            <div class="component-card p-3 mb-3">
+                                <h6 class="comp-header text-success fw-bold"><i class="bi bi-gpu-card"></i> Graphics (GPU)</h6>
+                                <div class="row">
+                                    <div class="col-12 grid-item"><span class="expert-label">Model Name (name_gpu)</span><span class="expert-val-wrap">{{ build.gpu.name_gpu }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Passmark (passmark_gpu)</span><span class="expert-val text-success">{{ build.gpu.passmark_gpu|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Global Rank (rank_gpu)</span><span class="expert-val">#{{ build.gpu.rank_gpu|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-12 grid-item"><span class="expert-label">Price (price_gpu)</span><span class="expert-val text-danger">฿{{ build.gpu.price_gpu|floatformat:"0"|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-12 grid-item"><span class="expert-label">Value (videocard_value_gpu)</span><span class="expert-val">{{ build.gpu.videocard_value_gpu|default:"-" }} pts/฿</span></div>
+                                </div>
+                            </div>  
+
+                            <div class="component-card p-3 mb-3">
+                                <h6 class="comp-header fw-bold" style="color: #d97706;"><i class="bi bi-motherboard-fill"></i> Mainboard (MB)</h6>
+                                <div class="row">
+                                    <div class="col-12 grid-item"><span class="expert-label">Model Name (name_mainboards)</span><span class="expert-val-wrap">{{ build.mb.name_mainboards }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Category (category_mainboards)</span><span class="expert-val" title="{{ build.mb.category_mainboards }}">{{ build.mb.category_mainboards|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Socket (socket_mainboards)</span><span class="expert-val">{{ build.mb.socket_mainboards|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-12 grid-item"><span class="expert-label">Warranty (warranty_mainboards)</span><span class="expert-val">{{ build.mb.warranty_mainboards|default:"-" }}</span></div>
+                                    <div class="col-12 grid-item"><span class="expert-label">Specifications (specifications_mainboards)</span><span class="expert-val-wrap text-muted" style="font-size:0.8rem;">{{ build.mb.specifications_mainboards|default:"-" }}</span></div>
+                                    <div class="col-12 grid-item"><span class="expert-label">Price (price_mainboards)</span><span class="expert-val text-danger">฿{{ build.mb.price_mainboards|floatformat:"0"|default:"-" }}</span></div>
+                                </div>
+                            </div>
+
+                            <div class="component-card p-3 mb-3">
+                                <h6 class="comp-header text-danger fw-bold"><i class="bi bi-memory"></i> Memory (RAM)</h6>
+                                <div class="row">
+                                    <div class="col-12 grid-item"><span class="expert-label">Model Name (name__ram)</span><span class="expert-val-wrap">{{ build.ram.name__ram }} <span class="badge bg-danger ms-1 shadow-sm">x{{ build.ram_qty }}</span></span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Type</span><span class="expert-val">{% if build.ram.ddr_type_ram and build.ram.ddr_type_ram != 'nan' %}{{ build.ram.ddr_type_ram }}{% else %}-{% endif %}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Latency</span><span class="expert-val">{% if build.ram.latency_ns_ram and build.ram.latency_ns_ram != 'nan' %}{{ build.ram.latency_ns_ram }} ns{% else %}-{% endif %}</span></div>
+                                    <div class="col-sm-4 col-12 grid-item"><span class="expert-label">Price/Unit</span><span class="expert-val text-danger">{% if build.ram.price_ram and build.ram.price_ram != 'nan' %}฿{{ build.ram.price_ram|floatformat:"0" }}{% else %}-{% endif %}</span></div>
+                                    <div class="col-sm-6 col-6 grid-item"><span class="expert-label">Read Uncached</span><span class="expert-val">{% if build.ram.read_uncached_gbs_ram and build.ram.read_uncached_gbs_ram != 'nan' %}{{ build.ram.read_uncached_gbs_ram }} GB/s{% else %}-{% endif %}</span></div>
+                                    <div class="col-sm-6 col-6 grid-item"><span class="expert-label">Write Speed</span><span class="expert-val">{% if build.ram.write_gbs_ram and build.ram.write_gbs_ram != 'nan' %}{{ build.ram.write_gbs_ram }} GB/s{% else %}-{% endif %}</span></div>
+                                </div>
+                            </div>
+
+                            <div class="component-card p-3 mb-3">
+                                <h6 class="comp-header text-info fw-bold" style="color: #0284c7 !important;"><i class="bi bi-device-hdd-fill"></i> Storage (SSD/HDD)</h6>
+                                <div class="row">
+                                    <div class="col-12 grid-item"><span class="expert-label">Drive Name (drive_name_hdd)</span><span class="expert-val-wrap">{{ build.storage.drive_name_hdd|default:build.ssd_name|safe }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Type (type_hdd)</span><span class="expert-val">{% if build.storage.type_hdd and build.storage.type_hdd != 'nan' %}{{ build.storage.type_hdd }}{% else %}-{% endif %}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Size (size_hdd)</span><span class="expert-val">{% if build.storage.size_hdd and build.storage.size_hdd != 'nan' %}{{ build.storage.size_hdd }}{% else %}-{% endif %}</span></div>
+                                    <div class="col-sm-4 col-12 grid-item"><span class="expert-label">Price (price_hdd)</span><span class="expert-val text-danger">{% if build.storage.price_hdd and build.storage.price_hdd != 'nan' %}฿{{ build.storage.price_hdd|floatformat:"0" }}{% else %}-{% endif %}</span></div>
+                                </div>
+                            </div>
+
+                            <div class="component-card p-3 mb-4">
+                                <h6 class="comp-header text-secondary fw-bold"><i class="bi bi-plug-fill"></i> Power Supply (PSU)</h6>
+                                <div class="row">
+                                    <div class="col-12 grid-item"><span class="expert-label">Model Name (name_powersupplies)</span><span class="expert-val-wrap">{{ build.psu.name_powersupplies }}</span></div>
+                                    <div class="col-sm-6 col-12 grid-item"><span class="expert-label">Category (category_powersupplies)</span><span class="expert-val">{{ build.psu.category_powersupplies|default:"-" }}</span></div>
+                                    <div class="col-sm-6 col-12 grid-item"><span class="expert-label">Warranty (warranty_powersupplies)</span><span class="expert-val">{{ build.psu.warranty_powersupplies|default:"-" }}</span></div>
+                                    <div class="col-12 grid-item"><span class="expert-label">Specifications (specifications_powersupplies)</span><span class="expert-val-wrap text-muted" style="font-size:0.8rem;">{{ build.psu.specifications_powersupplies|default:"-" }}</span></div>
+                                    <div class="col-12 grid-item"><span class="expert-label">Price (price_powersupplies)</span><span class="expert-val text-danger">฿{{ build.psu.price_powersupplies|floatformat:"0"|default:"-" }}</span></div>
+                                </div>
+                            </div>
+
+                            {% if build.case %}
+                            <div class="component-card p-3 mb-0" style="border-style: dashed;">
+                                <h6 class="comp-header fw-bold" style="background: transparent; border:none; margin-top:-10px;"><i class="bi bi-box"></i> Default Case (AI Recommended)</h6>
+                                <div class="row">
+                                    <div class="col-12 grid-item"><span class="expert-label">Model (brand_case + model_name_case)</span><span class="expert-val-wrap">{{ build.case.brand_case }} {{ build.case.model_name_case }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Form Factor (form_factor_case)</span><span class="expert-val">{{ build.case.form_factor_case|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-6 grid-item"><span class="expert-label">Warranty (warranty_case)</span><span class="expert-val">{{ build.case.warranty_case|default:"-" }}</span></div>
+                                    <div class="col-sm-4 col-12 grid-item"><span class="expert-label">Price (price_case)</span><span class="expert-val text-danger">฿{{ build.case.price_case|floatformat:"0"|default:"-" }}</span></div>
+                                    <div class="col-12 grid-item mb-0"><span class="expert-label">Description (description_case)</span><span class="expert-val-wrap text-muted" style="font-size:0.75rem;">{{ build.case.description_case|default:"-" }}</span></div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="mt-3 text-center">
+                                <span class="badge bg-secondary rounded-pill border shadow-sm">* ข้อมูล Accessories อื่นๆ สามารถดูและเลือกเพิ่มได้ในปุ่ม "จำลองเพิ่มอุปกรณ์เสริม"</span>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer border-top-0">
+                            <button type="button" class="btn btn-expert px-4" data-bs-dismiss="modal">Close Data View</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="d-flex flex-column align-items-center justify-content-center text-muted" style="min-height: 50vh;">
+                <i class="bi bi-database-fill-gear" style="font-size: 4rem; color: var(--x-border);"></i>
+                <h5 class="mt-3 fw-bold">Awaiting Parameters</h5>
+                <p>กรุณากำหนดงบประมาณด้านซ้ายมือ เพื่อให้โมเดลทำนายผล</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="gearModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold"><i class="bi bi-tools" style="color:#1d9bf0;"></i> อุปกรณ์เสริม (จัดกลุ่มตามแบรนด์/ประเภท)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="row g-0 h-100">
+                    
+                    <div class="col-md-3 border-end p-3" style="background-color: var(--x-bg-body);">
+                        <div class="nav flex-column nav-pills gear-nav-pills" id="v-pills-tab" role="tablist">
+                            <button class="nav-link active text-start fw-bold mb-1 rounded-pill" data-bs-toggle="pill" data-bs-target="#v-pills-case" type="button">
+                                <i class="bi bi-pc me-2"></i> Case (เคส)
+                            </button>
+                            <button class="nav-link text-start fw-bold mb-1 rounded-pill" data-bs-toggle="pill" data-bs-target="#v-pills-monitor" type="button">
+                                <i class="bi bi-display me-2"></i> Monitor (จอภาพ)
+                            </button>
+                            <button class="nav-link text-start fw-bold mb-1 rounded-pill" data-bs-toggle="pill" data-bs-target="#v-pills-keyboard" type="button">
+                                <i class="bi bi-keyboard me-2"></i> Keyboard (คีย์บอร์ด)
+                            </button>
+                            <button class="nav-link text-start fw-bold mb-1 rounded-pill" data-bs-toggle="pill" data-bs-target="#v-pills-mouse" type="button">
+                                <i class="bi bi-mouse me-2"></i> Mouse (เมาส์)
+                            </button>
+                            <button class="nav-link text-start fw-bold mb-1 rounded-pill" data-bs-toggle="pill" data-bs-target="#v-pills-headset" type="button">
+                                <i class="bi bi-headset me-2"></i> Headset (หูฟัง)
+                            </button>
+                            <button class="nav-link text-start fw-bold mb-1 rounded-pill" data-bs-toggle="pill" data-bs-target="#v-pills-mic" type="button">
+                                <i class="bi bi-mic me-2"></i> Microphone (ไมค์)
+                            </button>
+                            <button class="nav-link text-start fw-bold mb-1 rounded-pill" data-bs-toggle="pill" data-bs-target="#v-pills-cooler" type="button">
+                                <i class="bi bi-fan me-2"></i> Cooling (ระบบระบายความร้อน)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9 p-4" style="max-height: 70vh; overflow-y: auto;">
+                            <div class="tab-content">
+                                
+                                <div class="tab-pane fade show active" id="v-pills-case">
+                                    <h5 class="fw-bold mb-3 border-bottom pb-2">เลือกเคสคอมพิวเตอร์</h5>
+                                    
+                                    <div class="input-group mb-3 rounded-pill overflow-hidden shadow-sm" style="border: 1px solid var(--x-border);">
+                                        <span class="input-group-text border-0 bg-transparent"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control border-0 ps-0 gear-search-input" placeholder="ค้นหาชื่อเคส..." data-target="accordionCase">
+                                    </div>
+
+                                    <div class="list-group mb-3 shadow-sm rounded-4 overflow-hidden border">
+                                        <label class="list-group-item border-0 d-flex justify-content-between align-items-center cursor-pointer">
+                                            <div class="d-flex align-items-center">
+                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_case" value="0" data-name="ไม่เลือก" checked>
+                                                <span style="font-size: 0.9rem;" class="fw-bold text-muted">ไม่เลือก หรือใช้ Case พื้นฐานที่ระบบจัดให้</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="accordion shadow-sm rounded-4 overflow-hidden border" id="accordionCase">
+                                        {% regroup all_cases by form_factor_case as case_factors %}
+                                        {% for factor in case_factors %}
+                                        <div class="accordion-item border-0 border-bottom">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCase{{ forloop.counter }}">
+                                                    <i class="bi bi-box-fill text-primary me-2"></i> Form Factor: {{ factor.grouper|default:"ไม่ระบุประเภท" }} 
+                                                    <span class="badge bg-secondary ms-2 rounded-pill">{{ factor.list|length }} รุ่น</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseCase{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionCase">
+                                                <div class="accordion-body p-0">
+                                                    <div class="list-group list-group-flush">
+                                                        {% for c in factor.list %}
+                                                        <label class="list-group-item border-0 border-bottom d-flex justify-content-between align-items-center cursor-pointer">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_case" value="{{ c.price_case }}" data-name="{{ c.brand_case }} {{ c.model_name_case }}">
+                                                                <div>
+                                                                    <div class="fw-bold" style="font-size: 0.85rem;">{{ c.brand_case }} {{ c.model_name_case }}</div>
+                                                                    <div class="text-muted" style="font-size: 0.75rem;">ประกัน: {{ c.warranty_case }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="text-danger fw-bold" style="font-size: 0.85rem;">+฿{{ c.price_case|floatformat:"0" }}</span>
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-monitor">
+                                    <h5 class="fw-bold mb-3 border-bottom pb-2">เลือกจอภาพ (Monitor)</h5>
+                                    
+                                    <div class="input-group mb-3 rounded-pill overflow-hidden shadow-sm" style="border: 1px solid var(--x-border);">
+                                        <span class="input-group-text border-0 bg-transparent"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control border-0 ps-0 gear-search-input" placeholder="ค้นหาชื่อจอภาพ..." data-target="accordionMonitor">
+                                    </div>
+
+                                    <div class="accordion shadow-sm rounded-4 overflow-hidden border" id="accordionMonitor">
+                                        {% regroup all_monitors|dictsort:"screen_size_moniter" by screen_size_moniter as monitor_sizes %}
+                                        {% for size in monitor_sizes %}
+                                        <div class="accordion-item border-0 border-bottom">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMonitor{{ forloop.counter }}">
+                                                    <i class="bi bi-aspect-ratio-fill text-success me-2"></i> ขนาดหน้าจอ: {{ size.grouper|default:"ไม่ระบุขนาด" }}
+                                                    <span class="badge bg-secondary ms-2 rounded-pill">{{ size.list|length }} รุ่น</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseMonitor{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionMonitor">
+                                                <div class="accordion-body p-0">
+                                                    <div class="list-group list-group-flush">
+                                                        {% for m in size.list %}
+                                                        <label class="list-group-item border-0 border-bottom d-flex justify-content-between align-items-center cursor-pointer">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_monitor" value="{{ m.price_moniter }}" data-name="{{ m.brand_moniter }} {{ m.model_name_moniter }}">
+                                                                <div>
+                                                                    <div class="fw-bold" style="font-size: 0.85rem;">{{ m.brand_moniter }} {{ m.model_name_moniter }}</div>
+                                                                    <div class="text-muted" style="font-size: 0.75rem;">{{ m.resolution_moniter }} | Panel: {{ m.panel_type_moniter }} | {{ m.refresh_rate_moniter }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="text-danger fw-bold" style="font-size: 0.85rem;">+฿{{ m.price_moniter|floatformat:"0" }}</span>
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-keyboard">
+                                    <h5 class="fw-bold mb-3 border-bottom pb-2">เลือกคีย์บอร์ด (Keyboard)</h5>
+                                    
+                                    <div class="input-group mb-3 rounded-pill overflow-hidden shadow-sm" style="border: 1px solid var(--x-border);">
+                                        <span class="input-group-text border-0 bg-transparent"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control border-0 ps-0 gear-search-input" placeholder="ค้นหาชื่อคีย์บอร์ด..." data-target="accordionKeyboard">
+                                    </div>
+
+                                    <div class="accordion shadow-sm rounded-4 overflow-hidden border" id="accordionKeyboard">
+                                        {% regroup all_keyboards by category_keyboards as keyboard_categories %}
+                                        {% for category in keyboard_categories %}
+                                        <div class="accordion-item border-0 border-bottom">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseKeyboard{{ forloop.counter }}">
+                                                    <i class="bi bi-keyboard-fill text-warning me-2"></i> ประเภท: {{ category.grouper|default:"ไม่ระบุประเภท" }}
+                                                    <span class="badge bg-secondary ms-2 rounded-pill">{{ category.list|length }} รุ่น</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseKeyboard{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionKeyboard">
+                                                <div class="accordion-body p-0">
+                                                    <div class="list-group list-group-flush">
+                                                        {% for kb in category.list %}
+                                                        <label class="list-group-item border-0 border-bottom d-flex justify-content-between align-items-center cursor-pointer">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_keyboard" value="{{ kb.price_keyboards }}" data-name="{{ kb.name_keyboards }}">
+                                                                <div>
+                                                                    <div class="fw-bold" style="font-size: 0.85rem;">{{ kb.name_keyboards }}</div>
+                                                                    <div class="text-muted" style="font-size: 0.75rem;">ประกัน: {{ kb.warranty_keyboards }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="text-danger fw-bold" style="font-size: 0.85rem;">+฿{{ kb.price_keyboards|floatformat:"0" }}</span>
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-mouse">
+                                    <h5 class="fw-bold mb-3 border-bottom pb-2">เลือกเมาส์ (Mouse)</h5>
+                                    
+                                    <div class="input-group mb-3 rounded-pill overflow-hidden shadow-sm" style="border: 1px solid var(--x-border);">
+                                        <span class="input-group-text border-0 bg-transparent"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control border-0 ps-0 gear-search-input" placeholder="ค้นหาชื่อเมาส์..." data-target="accordionMouse">
+                                    </div>
+
+                                    <div class="accordion shadow-sm rounded-4 overflow-hidden border" id="accordionMouse">
+                                        {% regroup all_mice by type_mouse as mouse_categories %}
+                                        {% for category in mouse_categories %}
+                                        <div class="accordion-item border-0 border-bottom">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMouse{{ forloop.counter }}">
+                                                    <i class="bi bi-mouse2-fill me-2"></i> ประเภท: {{ category.grouper|default:"ไม่ระบุประเภท" }}
+                                                    <span class="badge bg-secondary ms-2 rounded-pill">{{ category.list|length }} รุ่น</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseMouse{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionMouse">
+                                                <div class="accordion-body p-0">
+                                                    <div class="list-group list-group-flush">
+                                                        {% for m in category.list %}
+                                                        <label class="list-group-item border-0 border-bottom d-flex justify-content-between align-items-center cursor-pointer">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_mouse" value="{{ m.price_mouse }}" data-name="{{ m.brand_mouse }} {{ m.model_name_mouse }}">
+                                                                <div>
+                                                                    <div class="fw-bold" style="font-size: 0.85rem;">{{ m.brand_mouse }} {{ m.model_name_mouse }}</div>
+                                                                    <div class="text-muted" style="font-size: 0.75rem;">DPI: {{ m.resolution_dpi_mouse }} | ประกัน: {{ m.warranty_mouse }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="text-danger fw-bold" style="font-size: 0.85rem;">+฿{{ m.price_mouse|floatformat:"0" }}</span>
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-headset">
+                                    <h5 class="fw-bold mb-3 border-bottom pb-2">เลือกหูฟัง (Headset)</h5>
+                                    
+                                    <div class="input-group mb-3 rounded-pill overflow-hidden shadow-sm" style="border: 1px solid var(--x-border);">
+                                        <span class="input-group-text border-0 bg-transparent"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control border-0 ps-0 gear-search-input" placeholder="ค้นหาชื่อหูฟัง..." data-target="accordionHeadset">
+                                    </div>
+
+                                    <div class="accordion shadow-sm rounded-4 overflow-hidden border" id="accordionHeadset">
+                                        {% regroup all_headsets by category_headsets as headset_categories %}
+                                        {% for category in headset_categories %}
+                                        <div class="accordion-item border-0 border-bottom">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHeadset{{ forloop.counter }}">
+                                                    <i class="bi bi-headphones me-2"></i> ประเภท: {{ category.grouper|default:"ไม่ระบุประเภท" }}
+                                                    <span class="badge bg-secondary ms-2 rounded-pill">{{ category.list|length }} รุ่น</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseHeadset{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionHeadset">
+                                                <div class="accordion-body p-0">
+                                                    <div class="list-group list-group-flush">
+                                                        {% for h in category.list %}
+                                                        <label class="list-group-item border-0 border-bottom d-flex justify-content-between align-items-center cursor-pointer">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_headset" value="{{ h.price_headsets }}" data-name="{{ h.name_headsets }}">
+                                                                <div>
+                                                                    <div class="fw-bold" style="font-size: 0.85rem;">{{ h.name_headsets }}</div>
+                                                                    <div class="text-muted" style="font-size: 0.75rem;">ประกัน: {{ h.warranty_headsets }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="text-danger fw-bold" style="font-size: 0.85rem;">+฿{{ h.price_headsets|floatformat:"0" }}</span>
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-mic">
+                                    <h5 class="fw-bold mb-3 border-bottom pb-2">เลือกไมโครโฟน (Microphone)</h5>
+                                    
+                                    <div class="input-group mb-3 rounded-pill overflow-hidden shadow-sm" style="border: 1px solid var(--x-border);">
+                                        <span class="input-group-text border-0 bg-transparent"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control border-0 ps-0 gear-search-input" placeholder="ค้นหาชื่อไมโครโฟน..." data-target="accordionMic">
+                                    </div>
+
+                                    <div class="accordion shadow-sm rounded-4 overflow-hidden border" id="accordionMic">
+                                        {% regroup all_mics by category_microphones as mic_categories %}
+                                        {% for category in mic_categories %}
+                                        <div class="accordion-item border-0 border-bottom">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMic{{ forloop.counter }}">
+                                                    <i class="bi bi-mic-fill me-2"></i> ประเภท: {{ category.grouper|default:"ไม่ระบุประเภท" }}
+                                                    <span class="badge bg-secondary ms-2 rounded-pill">{{ category.list|length }} รุ่น</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseMic{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionMic">
+                                                <div class="accordion-body p-0">
+                                                    <div class="list-group list-group-flush">
+                                                        {% for m in category.list %}
+                                                        <label class="list-group-item border-0 border-bottom d-flex justify-content-between align-items-center cursor-pointer">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_mic" value="{{ m.price_microphones }}" data-name="{{ m.name_microphones }}">
+                                                                <div>
+                                                                    <div class="fw-bold" style="font-size: 0.85rem;">{{ m.name_microphones }}</div>
+                                                                    <div class="text-muted" style="font-size: 0.75rem;">ประกัน: {{ m.warranty_microphones }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="text-danger fw-bold" style="font-size: 0.85rem;">+฿{{ m.price_microphones|floatformat:"0" }}</span>
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="v-pills-cooler">
+                                    <h5 class="fw-bold mb-3 border-bottom pb-2">เลือกระบบระบายความร้อน (Cooling)</h5>
+                                    
+                                    <div class="input-group mb-3 rounded-pill overflow-hidden shadow-sm" style="border: 1px solid var(--x-border);">
+                                        <span class="input-group-text border-0 bg-transparent"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control border-0 ps-0 gear-search-input" placeholder="ค้นหาชื่อระบบระบายความร้อน..." data-target="accordionCooler">
+                                    </div>
+
+                                    <div class="list-group mb-3 shadow-sm rounded-4 overflow-hidden border">
+                                        <label class="list-group-item border-0 d-flex justify-content-between align-items-center cursor-pointer">
+                                            <div class="d-flex align-items-center">
+                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_cooler" value="0" data-name="ไม่เลือก" checked>
+                                                <span style="font-size: 0.9rem;" class="fw-bold text-muted">ใช้ Sink/Cooler เดิมแถมมากับ CPU</span>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <div class="accordion shadow-sm rounded-4 overflow-hidden border" id="accordionCooler">
+                                        {% regroup all_coolers by type_cpucooler as cooler_categories %}
+                                        
+                                        {% for category in cooler_categories %}
+                                        <div class="accordion-item border-0 border-bottom">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCooler{{ forloop.counter }}">
+                                                    {% if 'น้ำ' in category.grouper or 'Liquid' in category.grouper %}
+                                                        <i class="bi bi-droplet-fill text-info me-2"></i>
+                                                    {% else %}
+                                                        <i class="bi bi-fan text-secondary me-2"></i>
+                                                    {% endif %}
+                                                    
+                                                    ประเภท: {{ category.grouper|default:"ซิงค์ลม / ทั่วไป" }}
+                                                    <span class="badge bg-secondary ms-2 rounded-pill">{{ category.list|length }} รุ่น</span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapseCooler{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionCooler">
+                                                <div class="accordion-body p-0">
+                                                    <div class="list-group list-group-flush">
+                                                        {% for cooler in category.list %}
+                                                        <label class="list-group-item border-0 border-bottom d-flex justify-content-between align-items-center cursor-pointer">
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-check-input me-3 gear-radio" type="radio" name="gear_cooler" value="{{ cooler.online_price_cpucooler }}" data-name="{{ cooler.product_name_cpucooler }}">
+                                                                <div>
+                                                                    <div class="fw-bold" style="font-size: 0.85rem;">{{ cooler.product_name_cpucooler }}</div>
+                                                                    <div class="text-muted" style="font-size: 0.75rem;">{{ cooler.details_cpucooler }} | ประกัน: {{ cooler.warranty_cpucooler }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="text-danger fw-bold" style="font-size: 0.85rem;">+฿{{ cooler.online_price_cpucooler|floatformat:"0" }}</span>
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top">
+                <button type="button" class="btn btn-expert px-4" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary fw-bold px-4 shadow-sm" onclick="submitSelectedGear()">
+                    <i class="bi bi-check2-circle"></i> ยืนยันอุปกรณ์และคำนวณราคา
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        const htmlElement = document.documentElement;
+
+        const savedTheme = localStorage.getItem('specx-theme') || 'light';
+        htmlElement.setAttribute('data-bs-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('specx-theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'bi bi-sun-fill text-warning';
+            } else {
+                themeIcon.className = 'bi bi-moon-stars-fill';
+            }
+        }
+    });
+</script>
+
+<script>
+    let currentBuildId = null;
+    let buildAddons = {}; 
+
+    function openModal(buildId) { 
+        currentBuildId = buildId; 
+
+        document.querySelectorAll('.gear-radio').forEach(r => r.checked = false);
+        document.querySelectorAll('input[type="radio"][value="0"]').forEach(r => r.checked = true);
+
+        if (buildAddons[buildId]) {
+            for (let cat in buildAddons[buildId]) {
+                let gear = buildAddons[buildId][cat];
+                if (gear) {
+                    let rb = document.querySelector(`input[name="gear_${cat}"][data-name="${gear.name}"]`);
+                    if (rb) rb.checked = true;
+                }
+            }
+        }
+    }
+
+    function submitSelectedGear() {
+        if (!currentBuildId) return;
+
+        const categories = ['case', 'cooler', 'monitor', 'mouse', 'keyboard', 'headset', 'mic'];
+        if (!buildAddons[currentBuildId]) buildAddons[currentBuildId] = {};
+
+        categories.forEach(cat => {
+            let checkedRadio = document.querySelector(`input[name="gear_${cat}"]:checked`);
+            if (checkedRadio && checkedRadio.value !== "0") {
+                buildAddons[currentBuildId][cat] = {
+                    price: parseFloat(checkedRadio.value),
+                    name: checkedRadio.getAttribute('data-name')
+                };
+            } else {
+                delete buildAddons[currentBuildId][cat]; 
+            }
+        });
+
+        renderBuild(currentBuildId);
+        bootstrap.Modal.getInstance(document.getElementById('gearModal')).hide();
+    }
+
+    function removeCategory(buildId, cat) {
+        if (buildAddons[buildId] && buildAddons[buildId][cat]) {
+            delete buildAddons[buildId][cat];
+            renderBuild(buildId); 
+        }
+    }
+
+    function renderBuild(buildId) {
+        const priceElement = document.getElementById(`total-price-${buildId}`);
+        const addedItemsElement = document.getElementById(`added-items-${buildId}`);
+        
+        let basePrice = parseFloat(priceElement.getAttribute('data-base-price'));
+        let aiCasePrice = parseFloat(document.getElementById(`ai-case-price-${buildId}`).getAttribute('data-price')) || 0;
+        let aiCoolerPrice = parseFloat(document.getElementById(`ai-cooler-price-${buildId}`).getAttribute('data-price')) || 0;
+        
+        let addedPrice = 0;
+        let itemsHtml = '';
+        
+        const catLabels = {
+            'case': 'Case', 'cooler': 'Cooler', 'monitor': 'Monitor', 
+            'mouse': 'Mouse', 'keyboard': 'Keyboard', 'headset': 'Headset', 'mic': 'Mic'
+        };
+
+        if (buildAddons[buildId]) {
+            for (let cat in buildAddons[buildId]) {
+                let gear = buildAddons[buildId][cat];
+                addedPrice += gear.price;
+                
+                itemsHtml += `
+                    <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded-4 shadow-sm" style="background-color: rgba(29, 155, 240, 0.1); font-size: 0.85rem; border: 1px solid var(--x-border);">
+                        <div style="line-height: 1.2;">
+                            <span class="d-block fw-bold"><span class="badge bg-secondary me-1 rounded-pill">${catLabels[cat]}</span> ${gear.name}</span>
+                            <span class="text-danger fw-bold">+฿${gear.price.toLocaleString('en-US')}</span>
+                        </div>
+                        <button type="button" class="btn btn-sm text-danger p-0 m-0" onclick="removeCategory('${buildId}', '${cat}')">
+                            <i class="bi bi-x-circle-fill fs-5"></i>
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        addedItemsElement.innerHTML = itemsHtml;
+        
+        let newTotal = basePrice + addedPrice;
+       
+        document.getElementById(`display-price-${buildId}`).innerHTML = `฿${newTotal.toLocaleString('en-US')}`;
+        
+       let originalBudget = parseFloat(document.getElementById('user-budget').getAttribute('data-budget')) || 0;
+        const warningElement = document.getElementById(`budget-warning-${buildId}`);
+        
+        if (originalBudget > 0 && newTotal > originalBudget) {
+            let overBudgetAmount = newTotal - originalBudget;
+            warningElement.innerHTML = `<i class="bi bi-exclamation-triangle-fill"></i> ราคาสุทธิเกินงบไป <strong>${overBudgetAmount.toLocaleString('en-US')}</strong> บาท!`;
+            warningElement.style.display = 'block';
+        } else {
+            warningElement.style.display = 'none';
+        }
+    }
+</script>
+<script>
+    const budgetInput = document.getElementById('budget-input'); 
+    const brandBox = document.getElementById('brand-preference-box');
+    const lowBudgetNotice = document.getElementById('low-budget-notice');
+
+    function checkBudgetForBrands() {
+        if (!budgetInput) return;
+        let val = parseInt(budgetInput.value) || 0;
+        if (val >= 18000) {
+            brandBox.style.display = 'block';
+            lowBudgetNotice.style.display = 'none';
+        } else {
+            brandBox.style.display = 'none';
+            if (val > 0) {
+                lowBudgetNotice.style.display = 'block';
+            }
+            let allCpu = document.querySelector('input[name="cpu_brand"][value="all"]');
+            let allGpu = document.querySelector('input[name="gpu_brand"][value="all"]');
+            if (allCpu) allCpu.checked = true;
+            if (allGpu) allGpu.checked = true;
+        }
+    }
+
+    if (budgetInput) {
+        budgetInput.addEventListener('input', checkBudgetForBrands);
+        checkBudgetForBrands();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const budgetVal = parseFloat(document.getElementById('user-budget').getAttribute('data-budget')) || 0;
+        const selectedUsage = document.querySelector('input[name="usage_type"]:checked');
+        
+        if (budgetVal > 0 && budgetVal < 15000 && selectedUsage && selectedUsage.value === 'creator') {
+            const warningBox = document.getElementById('ai-insight-warning');
+            if (warningBox) warningBox.style.display = 'block';
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInputs = document.querySelectorAll('.gear-search-input');
+        
+        searchInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                const targetId = this.getAttribute('data-target');
+                const accordion = document.getElementById(targetId);
+                
+                if (!accordion) return;
+                
+                const accordionItems = accordion.querySelectorAll('.accordion-item');
+                
+                accordionItems.forEach(accItem => {
+                    const listItems = accItem.querySelectorAll('label.list-group-item');
+                    let hasVisibleItem = false;
+                    
+                    listItems.forEach(item => {
+                        const radio = item.querySelector('.gear-radio');
+                        if (!radio) return;
+                        
+                        const itemName = radio.getAttribute('data-name').toLowerCase();
+                        
+                        if (itemName.includes(searchTerm)) {
+                            item.classList.remove('d-none');
+                            item.classList.add('d-flex'); 
+                            hasVisibleItem = true;
+                        } else {
+                            item.classList.remove('d-flex');
+                            item.classList.add('d-none'); 
+                        }
+                    });
+                    
+                    if (hasVisibleItem) {
+                        accItem.style.display = "block";
+                    } else {
+                        accItem.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
